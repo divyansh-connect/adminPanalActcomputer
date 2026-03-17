@@ -8,14 +8,6 @@ export const studentsData = [
     status: "Paid",
   },
   {
-    id: 2,
-    name: "Sunil Verma",
-    guardian: "Ramesh Verma",
-    phone: "9123456789",
-    course: "Python",
-    status: "Partial",
-  },
-  {
     id: 3,
     name: "Aman Gupta",
     guardian: "Suresh Gupta",
