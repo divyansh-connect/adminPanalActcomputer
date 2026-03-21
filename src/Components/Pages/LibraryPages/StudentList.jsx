@@ -126,7 +126,7 @@ const StudentsList = () => {
             {students.map((std) => {
               const joinDate = new Date(std.joinDate).toLocaleDateString();
               const vaildDate = new Date(std.vaildDate).toLocaleDateString();
-              const expiry = new Date(std.expiryDate).setHours(0, 0, 0, 0);
+              const expiry = new Date(std.vaildDate).setHours(0, 0, 0, 0);
               const isExpired = today > expiry;
 
               return (
