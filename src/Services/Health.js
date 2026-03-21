@@ -1,3 +1,5 @@
+import { apiFetch } from "./api";
+
 export const pineHealth = async () => {
   try {
     const response = await apiFetch(
