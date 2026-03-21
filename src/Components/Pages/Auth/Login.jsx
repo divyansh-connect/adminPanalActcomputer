@@ -1,7 +1,8 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useState } from "react";
 import { postAuthLogin } from "../../../Services/AuthServices";
 import { useNavigate } from "react-router-dom";
+import { pineHealth } from "../../../Services/Health";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -10,6 +11,18 @@ const Login = () => {
   const [password, setPassword] = useState("");
   const [errMsg, setErrMsg] = useState("");
   const [disErr, setDisErr] = useState(false);
+
+  useEffect(() => {
+    console.log("warn Start");
+
+    pineHealth()
+      .then((data) => {
+        console.log("ping", data);
+      })
+      .catch((error) => {
+        console.log("error", error);
+      });
+  });
 
   const handleSubmit = async (e) => {
     e.preventDefault();

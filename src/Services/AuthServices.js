@@ -7,7 +7,6 @@ export const getLoggedVerify = async (token) => {
     );
     return verify;
   } catch (error) {
-    console.log(error);
     throw error;
   }
 };
