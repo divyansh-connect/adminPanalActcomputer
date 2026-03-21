@@ -73,7 +73,7 @@ const StudentsList = () => {
                         return (
                           <tr key={std.id}>
                             <td>
-                              <span className="badge bg-primary">
+                              <span className="badge rounded-pill bg-info text-dark px-2 py-1 ">
                                 {" "}
                                 Seat {std.seat}{" "}
                               </span>
@@ -101,8 +101,8 @@ const StudentsList = () => {
                             </td>
                             <td>
                               {std.amount === "pending" ? (
-                                <span className="badge bg-warning">
-                                  pending
+                                <span className="badge bg-warning text-dark">
+                                  Pending
                                 </span>
                               ) : (
                                 <span
@@ -141,7 +141,7 @@ const StudentsList = () => {
         ) : (
           <>
             {students.map((std) => {
-              const expiry = new Date(std.expiryDate).setHours(0, 0, 0, 0);
+              const expiry = new Date(std.vaildDate).setHours(0, 0, 0, 0);
               const isExpired = today > expiry;
               return (
                 <div key={std.id} className="card shadow-sm mb-3">
@@ -150,11 +150,15 @@ const StudentsList = () => {
                       <div className="d-flex flex-wrap gap-2">
                         <h6 className="fw-bold mb-0">{std.name}</h6>
                         {std.amount === "pending" && (
-                          <span className="badge bg-warning">pending</span>
+                          <span className="badge bg-warning text-dark">
+                            Pending
+                          </span>
                         )}
                       </div>
 
-                      <span className=" badge bg-primary">Seat {std.seat}</span>
+                      <span className=" badge rounded-pill bg-info text-dark px-2 py-1">
+                        Seat {std.seat}
+                      </span>
                     </div>
 
                     <p className="mb-1 small">
