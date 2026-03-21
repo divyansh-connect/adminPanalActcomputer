@@ -4,6 +4,7 @@ import { useEffect } from "react";
 import { getAllStudents } from "../../../Services/InstitudeServices";
 
 import StdsListsSkeleton from "../Skeleton/StdsListsSkeleton";
+import { Link } from "react-router-dom";
 
 const StudentList = () => {
   const [student, setStudent] = useState([]);
@@ -17,7 +18,7 @@ const StudentList = () => {
     setSelectStudent(std);
     setPayFee(true);
   };
-  console.log(feeRecipt);
+  // console.log(feeRecipt);
 
   const filtered = student.filter((s) =>
     (s.stdName + s.stdPhone + s.stdFathOrHus)
@@ -107,11 +108,14 @@ const StudentList = () => {
                         </div>
 
                         <div className="col-md-2 text-end">
-                          <button className="btn btn-sm btn-outline-primary me-2">
+                          <Link
+                            to={`/students/${s._id}`}
+                            className="btn btn-sm btn-outline-primary me-2"
+                          >
                             View
-                          </button>
+                          </Link>
                           <button
-                            className="btn btn-sm btn-success"
+                            className="btn btn-sm btn-warning"
                             onClick={() => {
                               handlePayBtn(s);
                             }}

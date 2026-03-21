@@ -12,6 +12,7 @@ import Login from "../Components/Pages/Auth/Login";
 import { authLoader } from "../Routes/authLoader";
 import StdAdmission from "../Components/Pages/Actcomputer/StdAdmission";
 import StudentList from "../Components/Pages/Actcomputer/StudentList";
+import StudentView from "../Components/Pages/Actcomputer/StudentViewPages/StudentView";
 export const router = createBrowserRouter([
   {
     path: "/",
@@ -38,6 +39,7 @@ export const router = createBrowserRouter([
       // { index: true, element: <Dashboard /> },
       { path: "/studymaterials", element: <StudyMaterials /> },
       { path: "/students", element: <StudentList /> },
+      { path: "/students/:stdId", element: <StudentView /> },
       { path: "/announcements", element: <Announcements /> },
       { path: "/admissions", element: <StdAdmission /> },
     ],

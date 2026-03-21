@@ -1,9 +1,9 @@
 import React from "react";
-
-import AddStudentCancel from "../../Modal/ModalLibraryStudent/AddStudentCancel";
+import { IoMdArrowRoundBack } from "react-icons/io";
 import { useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { useEffect } from "react";
+import AddStudentCancel from "../../Modal/ModalLibraryStudent/AddStudentCancel";
 import {
   getSeats,
   getStudent,
@@ -63,6 +63,12 @@ const StudentDetailsEditing = () => {
     }
   };
 
+  let isExpired = false;
+  if (student?.vaildDate) {
+    const today = new Date().setHours(0, 0, 0, 0);
+    const expiry = new Date(student.vaildDate).setHours(0, 0, 0, 0);
+    isExpired = today > expiry;
+  }
   return (
     <>
       {loading ? (
@@ -75,9 +81,9 @@ const StudentDetailsEditing = () => {
               <h3 className="fw-bold">Edit Student</h3>
               <Link
                 to={`/library/student/${student?.id}`}
-                className="btn btn-link btn-sm"
+                className="btn btn-link"
               >
-                Back
+                <IoMdArrowRoundBack /> Back
               </Link>
             </div>
 
@@ -209,9 +215,15 @@ const StudentDetailsEditing = () => {
                         <div>
                           <label className="form-label">Status</label>
                           <div>
-                            <span className="badge bg-success px-3">
-                              Active
-                            </span>
+                            {isExpired ? (
+                              <span className="badge bg-danger px-3">
+                                Expired
+                              </span>
+                            ) : (
+                              <span className="badge bg-success px-3">
+                                Active
+                              </span>
+                            )}
                           </div>
                         </div>
                       </div>

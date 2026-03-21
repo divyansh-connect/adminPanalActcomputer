@@ -70,18 +70,35 @@ const StudentsList = () => {
                           0,
                         );
                         const isExpired = today > expiry;
-                        const joinDate = new Date(
-                          std.joinDate,
-                        ).toLocaleDateString();
-                        const vaildDate = new Date(
-                          std.vaildDate,
-                        ).toLocaleDateString();
                         return (
                           <tr key={std.id}>
-                            <td>{std.seat}</td>
+                            <td>
+                              <span className="badge bg-primary">
+                                {" "}
+                                Seat {std.seat}{" "}
+                              </span>
+                            </td>
                             <td className="text-start">{std.name}</td>
-                            <td>{joinDate}</td>
-                            <td>{vaildDate}</td>
+                            <td>
+                              {new Date(std.joinDate).toLocaleDateString(
+                                "en-IN",
+                                {
+                                  day: "2-digit",
+                                  month: "short",
+                                  year: "numeric",
+                                },
+                              )}
+                            </td>
+                            <td>
+                              {new Date(std.vaildDate).toLocaleDateString(
+                                "en-IN",
+                                {
+                                  day: "2-digit",
+                                  month: "short",
+                                  year: "numeric",
+                                },
+                              )}
+                            </td>
                             <td>
                               {std.amount === "pending" ? (
                                 <span className="badge bg-warning">
@@ -124,11 +141,8 @@ const StudentsList = () => {
         ) : (
           <>
             {students.map((std) => {
-              const joinDate = new Date(std.joinDate).toLocaleDateString();
-              const vaildDate = new Date(std.vaildDate).toLocaleDateString();
               const expiry = new Date(std.expiryDate).setHours(0, 0, 0, 0);
               const isExpired = today > expiry;
-
               return (
                 <div key={std.id} className="card shadow-sm mb-3">
                   <div className="card-body">
@@ -140,12 +154,26 @@ const StudentsList = () => {
                         )}
                       </div>
 
-                      <span className=" badge bg-danger">Seat {std.seat}</span>
+                      <span className=" badge bg-primary">Seat {std.seat}</span>
                     </div>
 
-                    <p className="mb-1 small">📅 Join: {joinDate}</p>
+                    <p className="mb-1 small">
+                      📅 Join:{" "}
+                      {new Date(std.joinDate).toLocaleDateString("en-IN", {
+                        day: "2-digit",
+                        month: "short",
+                        year: "numeric",
+                      })}
+                    </p>
 
-                    <p className="mb-2 small">⏳ Expiry: {vaildDate}</p>
+                    <p className="mb-2 small">
+                      ⏳ Expiry:{" "}
+                      {new Date(std.vaildDate).toLocaleDateString("en-IN", {
+                        day: "2-digit",
+                        month: "short",
+                        year: "numeric",
+                      })}
+                    </p>
 
                     <div className="d-flex justify-content-between align-items-center">
                       <span

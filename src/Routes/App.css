@@ -142,6 +142,17 @@
   overflow-y: auto;
   overflow-x: hidden;
 }
+
+.last-Pay{
+  background: #f3e8ff;
+  color: #6f42c1;
+  
+}
+
+.feeCard:hover {
+  transform: translateY(-3px);
+  transition: 0.2s;
+}
 /* Mobile */
 @media (max-width: 767px) {
   .sidebar {

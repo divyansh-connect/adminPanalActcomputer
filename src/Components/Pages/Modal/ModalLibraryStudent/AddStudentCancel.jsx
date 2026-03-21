@@ -33,7 +33,7 @@ const AddStudentCancel = ({ setShowModal }) => {
               <button
                 type="button"
                 className="btn btn-danger"
-                onClick={() => navigate("/library", { replace: true })}
+                onClick={() => navigate("/library/seats", { replace: true })}
               >
                 Yes, Cancel
               </button>

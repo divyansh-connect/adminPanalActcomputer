@@ -1,10 +1,9 @@
 import { apiFetch } from "./api";
+const API_URL = import.meta.env.VITE_API_URL;
 
 export const getCourse = async () => {
   try {
-    const courseFecth = await apiFetch(
-      `https://actcomputer.onrender.com/api/course/`,
-    );
+    const courseFecth = await apiFetch(`${API_URL}/api/course/`);
     const data = await courseFecth.json();
     if (!courseFecth.ok) {
       throw new Error({ message: data.message || "course not founded" });
@@ -20,13 +19,10 @@ export const getCourse = async () => {
 
 export const stdAdmSubmitting = async (stdAdm) => {
   try {
-    const response = await apiFetch(
-      `https://actcomputer.onrender.com/api/institude/admission`,
-      {
-        method: "POST",
-        body: JSON.stringify(stdAdm),
-      },
-    );
+    const response = await apiFetch(`${API_URL}/api/institude/admission`, {
+      method: "POST",
+      body: JSON.stringify(stdAdm),
+    });
     const result = await response.json();
 
     if (!response.ok) {
@@ -53,9 +49,7 @@ export const stdAdmSubmitting = async (stdAdm) => {
 
 export const getAllStudents = async () => {
   try {
-    const response = await apiFetch(
-      `https://actcomputer.onrender.com/api/institude/students`,
-    );
+    const response = await apiFetch(`${API_URL}/api/institude/students`);
     const data = await response.json();
     if (!response.ok) {
       return {
@@ -77,15 +71,38 @@ export const getAllStudents = async () => {
   }
 };
 
-export const payStdFee = async (payload) => {
+export const getInsituteStudent = async (stdId) => {
   try {
     const response = await apiFetch(
-      `https://actcomputer.onrender.com/api/institude/students/fee`,
-      {
-        method: "POST",
-        body: JSON.stringify(payload),
-      },
+      `${API_URL}/api/institude/student/${stdId}`,
     );
+    const data = await response.json();
+    if (!response.ok) {
+      return {
+        success: false,
+        message: data.message || "Student not found",
+      };
+    }
+    return {
+      success: true,
+      message: data.message || "Student fetched successfully",
+      data: data.data,
+    };
+  } catch (error) {
+    if (error.message === "Unauthorized") throw error;
+    return {
+      success: false,
+      message: error.message || "Network error",
+    };
+  }
+};
+
+export const payStdFee = async (payload) => {
+  try {
+    const response = await apiFetch(`${API_URL}/api/institude/students/fee`, {
+      method: "POST",
+      body: JSON.stringify(payload),
+    });
     const data = await response.json();
 
     if (!response.ok) {
@@ -108,15 +125,36 @@ export const payStdFee = async (payload) => {
   }
 };
 
+export const getAppPayments = async (sid) => {
+  try {
+    const response = await apiFetch(`${API_URL}/api/institude/payments/${sid}`);
+    const data = await response.json();
+    if (!response.ok) {
+      return {
+        success: false,
+        message: data.message || "Not founded",
+      };
+    }
+    return {
+      success: true,
+      message: data.message || "Payments fetch successfully",
+      data: data.data,
+    };
+  } catch (error) {
+    if (error.message === "Unauthorized") throw error;
+    return {
+      success: false,
+      message: error.message || "Network error",
+    };
+  }
+};
+
 export const institudeAnnouncement = async (payload) => {
   try {
-    const response = await apiFetch(
-      `https://actcomputer.onrender.com/api/announcement`,
-      {
-        method: "POST",
-        body: JSON.stringify(payload),
-      },
-    );
+    const response = await apiFetch(`${API_URL}/api/announcement`, {
+      method: "POST",
+      body: JSON.stringify(payload),
+    });
 
     const data = await response.json();
     if (!response.ok) {
@@ -143,9 +181,7 @@ export const institudeAnnouncement = async (payload) => {
 
 export const getinstituteAnnouncement = async () => {
   try {
-    const response = await apiFetch(
-      `https://actcomputer.onrender.com/api/announcement/`,
-    );
+    const response = await apiFetch(`${API_URL}/api/announcement/`);
     const data = await response.json();
     if (!response.ok) {
       return {
@@ -171,12 +207,9 @@ export const getinstituteAnnouncement = async () => {
 
 export const deleteInstituteAnnouncement = async (deleteId) => {
   try {
-    const response = await apiFetch(
-      `https://actcomputer.onrender.com/api/announcement/${deleteId}`,
-      {
-        method: "DELETE",
-      },
-    );
+    const response = await apiFetch(`${API_URL}/api/announcement/${deleteId}`, {
+      method: "DELETE",
+    });
     const data = await response.json();
     if (!response.ok) {
       return {
@@ -202,13 +235,10 @@ export const deleteInstituteAnnouncement = async (deleteId) => {
 
 export const uploadStudyMaterial = async (payload) => {
   try {
-    const response = await apiFetch(
-      `https://actcomputer.onrender.com/api/stdyMaterialFile`,
-      {
-        method: "POST",
-        body: JSON.stringify(payload),
-      },
-    );
+    const response = await apiFetch(`${API_URL}/api/stdyMaterialFile`, {
+      method: "POST",
+      body: JSON.stringify(payload),
+    });
     const data = await response.json();
     if (!response.ok) {
       return {

@@ -73,7 +73,7 @@ const StudentPayFee = ({ setPayFee, student, setFeeRecipt }) => {
         <div className="modal-dialog modal-dialog-centered modal-dialog-scrollable">
           <div className="modal-content">
             {/* Header */}
-            <div className="modal-header">
+            <div className="modal-header bg-warning">
               <h5 className="modal-title" id="institudeStudentFeeModal">
                 Pay Fee
               </h5>
@@ -143,11 +143,11 @@ const StudentPayFee = ({ setPayFee, student, setFeeRecipt }) => {
                     }}
                   >
                     <option value="">Select Fee Type</option>
-                    <option value="admission">Admission Fee</option>
-                    <option value="enrollment">Enrollment Fee</option>
-                    <option value="exam1">Examination Fee (1st Sem)</option>
-                    <option value="exam2">Examination Fee (2nd Sem)</option>
-                    <option value="monthly">Monthly Fee</option>
+                    <option value="Admission">Admission Fee</option>
+                    <option value="Enrollment">Enrollment Fee</option>
+                    <option value="1st Sem">Examination Fee (1st Sem)</option>
+                    <option value="2nd Sem">Examination Fee (2nd Sem)</option>
+                    <option value="Monthly">Monthly Fee</option>
                     <option value="other">Other</option>
                   </select>
                 </div>
@@ -227,8 +227,19 @@ const StudentPayFee = ({ setPayFee, student, setFeeRecipt }) => {
                     Cancel
                   </button>
 
-                  <button type="submit" className="btn btn-primary">
-                    Pay Fee
+                  <button
+                    type="submit"
+                    className="btn btn-success"
+                    disabled={isSaving}
+                  >
+                    {isSaving ? (
+                      <>
+                        <span className="spinner-border spinner-border-sm me-2"></span>
+                        Logging in...
+                      </>
+                    ) : (
+                      "Pay Now"
+                    )}
                   </button>
                 </div>
               </form>

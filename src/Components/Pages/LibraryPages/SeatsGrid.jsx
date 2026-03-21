@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useEffect } from "react";
-import { Link } from "react-router-dom";
+import { TbArrowBackUp } from "react-icons/tb";
+import { Link, replace, useNavigate } from "react-router-dom";
 import { getSeats } from "../../../Services/LibraryServices";
 import SeatsGridSkeleton from "../Skeleton/SeatsGridSkeleton";
 import FailedFetch from "../Error/FailedFetch";
@@ -9,7 +10,7 @@ const SeatsGrid = () => {
   const [seats, setSeats] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
-
+  const navigate = useNavigate();
   useEffect(() => {
     getSeats()
       .then((allSeats) => {
@@ -24,11 +25,20 @@ const SeatsGrid = () => {
   }, []);
 
   return (
-    <div className="container-fluid py-5">
+    <div className="container-fluid py-2">
       <div className="card shadow-lg border-0">
         <div className="card-body">
-          <h4 className="text-center mb-4 fw-bold">Library Seat Selection</h4>
-
+          <button
+            className="d-none d-sm-block btn btn-link btn-md text-start mb-0"
+            onClick={() => {
+              navigate("/library", { replace: true });
+            }}
+          >
+            <TbArrowBackUp /> Back
+          </button>
+          <h4 className="mb-3 py-2 text-center fw-bold">
+            Library Seat Selection
+          </h4>
           {/* Seats Grid */}
           <div className="row g-3 justify-content-center">
             {loading && <SeatsGridSkeleton />}
@@ -55,7 +65,6 @@ const SeatsGrid = () => {
               </div>
             ))}
           </div>
-
           {/* Legend */}
           <div className="d-flex justify-content-center gap-4 mt-5 small">
             <div>

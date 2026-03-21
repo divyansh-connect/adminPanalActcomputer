@@ -1,17 +1,14 @@
 import { apiFetch } from "./api";
-
+const API_URL = import.meta.env.VITE_API_URL;
 export const stdAdmUpload = async (uploadFile) => {
   try {
     const formData = new FormData();
 
     formData.append("stdAdmPhoto", uploadFile);
-    const uploaded = await apiFetch(
-      "https://actcomputer.onrender.com/api/upload/stdAdmPhoto",
-      {
-        method: "POST",
-        body: formData,
-      },
-    );
+    const uploaded = await apiFetch(`${API_URL}/api/upload/stdAdmPhoto`, {
+      method: "POST",
+      body: formData,
+    });
 
     const data = await uploaded.json();
 
@@ -30,13 +27,10 @@ export const uploadStudyMaterialFile = async (file) => {
     formData.append("stdyMaterialFile", file);
     console.log(file);
 
-    const uploaded = await apiFetch(
-      "https://actcomputer.onrender.com/api/upload/stdyMaterialFile",
-      {
-        method: "POST",
-        body: formData,
-      },
-    );
+    const uploaded = await apiFetch(`${API_URL}/api/upload/stdyMaterialFile`, {
+      method: "POST",
+      body: formData,
+    });
     const data = uploaded.json();
     if (!uploaded.ok) {
       return {

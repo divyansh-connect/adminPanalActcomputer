@@ -10,9 +10,6 @@ const StudentDetailsBio = ({
   const today = new Date().setHours(0, 0, 0, 0);
   const expiry = new Date(student.vaildDate).setHours(0, 0, 0, 0);
   const isExpired = today > expiry;
-
-  const joinDate = new Date(student.joinDate).toLocaleDateString();
-  const vaildDate = new Date(student.vaildDate).toLocaleDateString();
   return (
     <>
       <div>
@@ -32,8 +29,8 @@ const StudentDetailsBio = ({
 
                 <div className="d-flex justify-content-between mb-2">
                   <span className="text-muted">Seat No</span>
-                  <span className="fw-semibold bg-danger px-3 text-white rounded">
-                    {student.seat}
+                  <span className="fw-semibold bg-primary px-3 text-white rounded">
+                    Seat {student.seat}
                   </span>
                 </div>
 
@@ -44,7 +41,9 @@ const StudentDetailsBio = ({
 
                 <div className="d-flex justify-content-between">
                   <span className="text-muted">Gender</span>
-                  <span className="fw-semibold">{student.gender}</span>
+                  <span className="fw-semibold">
+                    {student.gender.toUpperCase()}
+                  </span>
                 </div>
               </div>
             </div>
@@ -60,12 +59,24 @@ const StudentDetailsBio = ({
 
                 <div className="d-flex justify-content-between mb-2">
                   <span className="text-muted">Join Date</span>
-                  <span className="fw-semibold">{joinDate}</span>
+                  <span className="fw-semibold">
+                    {new Date(student.joinDate).toLocaleDateString("en-IN", {
+                      day: "2-digit",
+                      month: "short",
+                      year: "numeric",
+                    })}
+                  </span>
                 </div>
 
                 <div className="d-flex justify-content-between mb-2">
                   <span className="text-muted">Vaild Upto</span>
-                  <span className="fw-semibold">{vaildDate}</span>
+                  <span className="fw-semibold">
+                    {new Date(student.vaildDate).toLocaleDateString("en-IN", {
+                      day: "2-digit",
+                      month: "short",
+                      year: "numeric",
+                    })}
+                  </span>
                 </div>
 
                 <div className="d-flex justify-content-between align-items-center">

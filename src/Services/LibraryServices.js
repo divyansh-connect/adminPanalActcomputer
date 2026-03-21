@@ -1,22 +1,17 @@
 import { apiFetch } from "./api";
-
+const API_URL = import.meta.env.VITE_API_URL;
 export const getSeats = async () => {
-  const response = await apiFetch(
-    `https://actcomputer.onrender.com/api/library/seats`,
-  );
+  const response = await apiFetch(`${API_URL}/api/library/seats`);
   const allSeats = await response.json();
   return allSeats.map(mappingLibrarySeats);
 };
 
 export const postAddStudentLibrary = async (addStd) => {
   try {
-    const response = await apiFetch(
-      `https://actcomputer.onrender.com/api/library/seats/addstudent`,
-      {
-        method: "POST",
-        body: JSON.stringify(addStd),
-      },
-    );
+    const response = await apiFetch(`${API_URL}/api/library/seats/addstudent`, {
+      method: "POST",
+      body: JSON.stringify(addStd),
+    });
     const data = await response.json();
     if (!response.ok) {
       return {
@@ -39,9 +34,7 @@ export const postAddStudentLibrary = async (addStd) => {
 
 export const getStudentList = async () => {
   try {
-    const response = await apiFetch(
-      `https://actcomputer.onrender.com/api/library/lists`,
-    );
+    const response = await apiFetch(`${API_URL}/api/library/lists`);
     const allLists = await response.json();
     return allLists.map(mappingLibraryStdLists);
   } catch (error) {
@@ -51,9 +44,7 @@ export const getStudentList = async () => {
 
 export const getStudent = async (stdId) => {
   try {
-    const response = await apiFetch(
-      `https://actcomputer.onrender.com/api/library/student/${stdId}`,
-    );
+    const response = await apiFetch(`${API_URL}/api/library/student/${stdId}`);
     const getStudent = await response.json();
     return mappingLibraryStdLists(getStudent);
   } catch (error) {
@@ -64,7 +55,7 @@ export const getStudent = async (stdId) => {
 export const putStudentPay = async (stdId, payload) => {
   try {
     const response = await apiFetch(
-      `https://actcomputer.onrender.com/api/library/student/pay/${stdId}`,
+      `${API_URL}/api/library/student/pay/${stdId}`,
       {
         method: "PUT",
         body: JSON.stringify(payload),
@@ -90,7 +81,7 @@ export const putStudentPay = async (stdId, payload) => {
 export const putStdEdit = async (stdId, payload) => {
   try {
     const response = await apiFetch(
-      `https://actcomputer.onrender.com/api/library/student/edit/${stdId}`,
+      `${API_URL}/api/library/student/edit/${stdId}`,
       {
         method: "PUT",
         body: JSON.stringify(payload),
@@ -116,7 +107,7 @@ export const putStdEdit = async (stdId, payload) => {
 export const deleteStd = async (stdId) => {
   try {
     const response = await apiFetch(
-      `https://actcomputer.onrender.com/api/library/student/delete/${stdId}`,
+      `${API_URL}/api/library/student/delete/${stdId}`,
       {
         method: "DELETE",
       },
