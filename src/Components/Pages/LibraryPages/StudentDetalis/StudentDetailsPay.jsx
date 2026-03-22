@@ -34,6 +34,7 @@ const StudentDetailsPay = ({ student, setStudent, setShowPayModal }) => {
     setValueError(newErrors);
 
     if (Object.keys(newErrors).length !== 0) {
+      setSaving(false);
       return;
     }
 
@@ -149,8 +150,8 @@ const StudentDetailsPay = ({ student, setStudent, setShowPayModal }) => {
                     Close
                   </button>
 
-                  <button className="btn btn-primary" onClick={handleSubmit}>
-                    Save changes
+                  <button className="btn btn-success" onClick={handleSubmit}>
+                    Pay fee
                   </button>
                 </>
               )}

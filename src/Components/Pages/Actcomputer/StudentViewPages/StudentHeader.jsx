@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { studentData } from "../../../../DemoData/LibarySeat";
 import StdCompleted from "../../Modal/ActComputer/StdCompleted";
 
-const StudentHeader = ({ student, setPayFee, setComplete }) => {
+const StudentHeader = ({ student, setPayFee, setComplete, setUpload }) => {
   return (
     <>
       <div className="container-fluid bg-white shadow-sm p-3 mb-3 rounded">
@@ -55,7 +55,12 @@ const StudentHeader = ({ student, setPayFee, setComplete }) => {
               Pay Fee
             </button>
 
-            <button className="btn btn-primary btn-sm" onClick={"onUploadDoc"}>
+            <button
+              className="btn btn-primary btn-sm"
+              onClick={() => {
+                setUpload(true);
+              }}
+            >
               Upload Doc
             </button>
 

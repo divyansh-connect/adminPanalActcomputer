@@ -5,7 +5,6 @@ export const getLoggedVerify = async (token) => {
     const verify = await apiFetch(`${API_URL}/api/auth/verify`);
     return verify;
   } catch (error) {
-    console.log(error);
     throw error;
   }
 };

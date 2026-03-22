@@ -1,7 +1,7 @@
 import React from "react";
 import { replace, useNavigate } from "react-router-dom";
 
-const AddStudentCancel = ({ setShowModal }) => {
+const EditStudentCancel = ({ setShowModal, student }) => {
   const navigate = useNavigate();
 
   return (
@@ -33,7 +33,9 @@ const AddStudentCancel = ({ setShowModal }) => {
               <button
                 type="button"
                 className="btn btn-danger"
-                onClick={() => navigate("/library", { replace: true })}
+                onClick={() =>
+                  navigate(`/library/student/${student.id}`, { replace: true })
+                }
               >
                 Yes, Cancel
               </button>
@@ -45,4 +47,4 @@ const AddStudentCancel = ({ setShowModal }) => {
   );
 };
 
-export default AddStudentCancel;
+export default EditStudentCancel;

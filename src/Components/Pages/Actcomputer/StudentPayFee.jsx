@@ -1,10 +1,9 @@
 import React from "react";
 import { useState } from "react";
-import { useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { payStdFee } from "../../../Services/InstitudeServices";
 
-const StudentPayFee = ({ setPayFee, student, setFeeRecipt }) => {
+const StudentPayFee = ({ setRefresh, stdPayments, setPayFee, student }) => {
   const navigate = useNavigate();
   const [amount, setAmount] = useState("");
   const [feeType, setFeeType] = useState("");
@@ -13,6 +12,12 @@ const StudentPayFee = ({ setPayFee, student, setFeeRecipt }) => {
   const [isSaving, setIsSaving] = useState(false);
   const [showCustom, setShowCustom] = useState(false);
   const [valueError, setValueError] = useState({});
+
+  const totalFees = student.courseId.courseTotalFees;
+  const totalPaid = stdPayments?.reduce((acc, p) => {
+    return (acc += p?.amount);
+  }, 0);
+  const remaining = totalFees - totalPaid;
 
   const handlePayfee = async (e, id) => {
     e.preventDefault();
@@ -49,10 +54,7 @@ const StudentPayFee = ({ setPayFee, student, setFeeRecipt }) => {
         setValueError({ errPay: response.message || "Payment Failed" });
       }
       setPayFee(false);
-      setFeeRecipt({
-        success: response.success,
-        data: response.data,
-      });
+      setRefresh((prew) => !prew);
     } catch (error) {
       if (error.message === "Unauthorized") return;
       setValueError({ errPay: error.message || "Server Failed" });
@@ -109,17 +111,17 @@ const StudentPayFee = ({ setPayFee, student, setFeeRecipt }) => {
               <div className="border rounded p-2 mb-3 small">
                 <div className="d-flex justify-content-between">
                   <span>Total Fee</span>
-                  <span>₹ student totalFee</span>
+                  <span>₹ {student.courseId.courseTotalFees}</span>
                 </div>
 
                 <div className="d-flex justify-content-between">
                   <span>Paid</span>
-                  <span>₹ student paidFee</span>
+                  <span>₹ {totalPaid}</span>
                 </div>
 
                 <div className="d-flex justify-content-between fw-semibold text-danger">
                   <span>Remaining</span>
-                  <span>₹ remaining </span>
+                  <span>₹ {remaining} </span>
                 </div>
               </div>
 

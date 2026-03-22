@@ -20,17 +20,28 @@ const StudentDetailsPayment = ({ student }) => {
               student.stdPaymentHistroy.map((payment, index) => {
                 const paymentDate =
                   payment.amount !== "pending"
-                    ? new Date(payment.paymentDate).toLocaleDateString()
+                    ? new Date(payment.paymentDate).toLocaleDateString(
+                        "en-IN",
+                        {
+                          day: "2-digit",
+                          month: "short",
+                          year: "numeric",
+                        },
+                      )
                     : "Awaiting Payment !!";
 
                 const validTill = new Date(
                   payment.validTill,
-                ).toLocaleDateString();
+                ).toLocaleDateString("en-IN", {
+                  day: "2-digit",
+                  month: "short",
+                  year: "numeric",
+                });
                 return (
                   <tr key={index}>
                     <td>
                       {payment.amount !== "pending" ? (
-                        ("₹", payment.amount)
+                        `Rs. ${payment.amount}`
                       ) : (
                         <span className="badge bg-warning">Pending</span>
                       )}

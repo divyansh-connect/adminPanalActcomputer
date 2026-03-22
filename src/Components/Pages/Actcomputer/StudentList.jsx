@@ -8,11 +8,11 @@ import { Link } from "react-router-dom";
 
 const StudentList = () => {
   const [student, setStudent] = useState([]);
+  const [refresh, setRefresh] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [selectStudent, setSelectStudent] = useState({});
   const [search, setSearch] = useState("");
   const [payFee, setPayFee] = useState(false);
-  const [feeRecipt, setFeeRecipt] = useState({ success: false, data: {} });
 
   const handlePayBtn = (std) => {
     setSelectStudent(std);
@@ -35,7 +35,7 @@ const StudentList = () => {
         setIsLoading(false);
         if (error.message === "Unauthorized") return;
       });
-  }, []);
+  }, [refresh]);
 
   return (
     <>
@@ -45,12 +45,12 @@ const StudentList = () => {
         <>
           {payFee && (
             <StudentPayFee
+              setRefresh={setRefresh}
               student={selectStudent}
               setPayFee={setPayFee}
-              setFeeRecipt={setFeeRecipt}
             />
           )}
-          {feeRecipt.success && <div>test {feeRecipt.data.amount} </div>}
+
           <div className="container-fluid p-2 ">
             <div className="card shadow-sm">
               <div className="card-body">

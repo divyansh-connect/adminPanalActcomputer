@@ -46,7 +46,7 @@ const StdCompleted = ({ setComplete, student }) => {
                   <strong>Name:</strong> {student.stdName}
                 </p>
                 <p className="mb-1">
-                  <strong>Course:</strong> DCA
+                  <strong>Course:</strong> {student.courseId.courseName}
                 </p>
                 <p className="mb-0">
                   <strong>Session:</strong> {student.admissionSession}
