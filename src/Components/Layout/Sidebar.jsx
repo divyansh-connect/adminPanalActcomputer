@@ -94,7 +94,7 @@ const Sidebar = ({ closeSidebar }) => {
           </li>
         </ul>
 
-        <ul className="d-md-none mt-auto px-3 pb-3">
+        <ul className="nav d-block d-md-none mt-auto mb-3 px-3 pb-3">
           <li>
             <button
               className="btn w-100 text-start d-flex align-items-center gap-2 rounded-3"
