@@ -1,24 +1,99 @@
 import React, { useState } from "react";
+import { uploadStdDoc } from "../../../../Services/uploadServices";
 
-const StdUploadDocModal = ({ setUpload, student }) => {
+const StdUploadDocModal = ({ setUpload, student, setStdDoc }) => {
   //
-  const [fileMarksheet, setFileMarksheet] = useState({
-    name: null,
-    selectFile: null,
+  const [filekey, setFilekey] = useState({ diploma: "", marksheet: "" });
+  const [errorMsg, setErrorMsg] = useState({
+    marksheet: "",
+    diploma: "",
+    isSave: "",
   });
-
-  const [fileDiploma, setFileDiploma] = useState({
-    name: null,
-    selectFile: null,
+  const [files, setFiles] = useState({
+    marksheet: { type: null, selectFile: null },
+    diploma: { type: null, selectFile: null },
   });
-
   const [loading, setLoading] = useState({ marksheet: false, diploma: false });
 
-  const handleUploadMarksheet = (e) => {
-    setLoading({ ...loading, marksheet: true });
-    console.log(student._id, fileMarksheet);
+  const validateFile = (file) => {
+    if (!file) {
+      return "Please select a file";
+    }
+    const allowedTypes = [
+      "image/jpeg",
+      "image/jpg",
+      "image/png",
+      "application/pdf",
+    ];
+    if (!allowedTypes.includes(file.type)) {
+      return "Only JPG & PNG images allowed";
+    }
+    const maxSize = 5 * 1024 * 1024;
+    if (file.size > maxSize) {
+      return "File size should be less than 5MB";
+    }
+    return null;
   };
-  const handleUploadDiploma = (e) => {};
+
+  const handleFileChnage = (e) => {
+    const { name, files } = e.target;
+    const file = files[0];
+    const error = validateFile(file);
+
+    setFiles((prev) => ({
+      ...prev,
+      [name]: { type: error ? null : name, selectFile: error ? null : file },
+    }));
+
+    setErrorMsg((prev) => ({
+      ...prev,
+      [name]: error,
+    }));
+  };
+
+  const handleUploadFiles = async (fileName) => {
+    setLoading({ ...loading, [fileName]: true });
+    const error = validateFile(files[fileName]?.selectFile);
+
+    if (error) {
+      setErrorMsg((prev) => ({ ...prev, [fileName]: error }));
+      setFiles((prev) => ({
+        ...prev,
+        [fileName]: { type: null, selectFile: null },
+      }));
+      setLoading({ ...loading, [fileName]: false });
+      return;
+    }
+    const payload = {
+      studentId: student._id,
+      type: fileName,
+      file: files[fileName].selectFile,
+    };
+    // Api calls
+    try {
+      const response = await uploadStdDoc(payload);
+      if (!response.success) {
+        setErrorMsg((prev) => ({ ...prev, isSave: response.message }));
+        return;
+      }
+      setStdDoc((prew) => [response.data, ...prew]);
+      setErrorMsg((prev) => ({ ...prev, isSave: response.message }));
+    } catch (error) {
+      if (error.message === "Unauthorized") return;
+      setErrorMsg({ ...errorMsg, isSave: error.message });
+    } finally {
+      setFiles((prev) => ({
+        ...prev,
+        [fileName]: { type: null, selectFile: null },
+      }));
+      setLoading((prev) => ({ ...prev, [fileName]: false }));
+      setFilekey((prev) => ({
+        ...prev,
+        [fileName]: Date.now(),
+      }));
+    }
+  };
+
   return (
     <>
       <div className="overlay"></div>
@@ -35,7 +110,11 @@ const StdUploadDocModal = ({ setUpload, student }) => {
                 onClick={() => setUpload(false)}
               ></button>
             </div>
-
+            {errorMsg.isSave && (
+              <div className="pt-3 text-danger small text-center">
+                {errorMsg.isSave}
+              </div>
+            )}
             {/* Body */}
             <div className="modal-body">
               {/* Student Info */}
@@ -60,21 +139,18 @@ const StdUploadDocModal = ({ setUpload, student }) => {
                 <div className="d-flex gap-2">
                   <input
                     type="file"
+                    key={filekey.marksheet}
                     className="form-control"
                     name="marksheet"
-                    accept="image/*"
-                    onChange={(e) => {
-                      setFileMarksheet({
-                        name: e.target.name,
-                        selectFile: e.target.files[0],
-                      });
-                    }}
+                    accept="image/*, application/pdf"
+                    onChange={handleFileChnage}
+                    disabled={loading.marksheet}
                   />
 
                   <button
                     className="btn btn-success d-flex align-items-center"
-                    onClick={handleUploadMarksheet}
-                    disabled={!fileMarksheet.selectFile || loading.marksheet}
+                    onClick={() => handleUploadFiles("marksheet")}
+                    disabled={!files.marksheet.selectFile || loading.marksheet}
                   >
                     {loading.marksheet ? (
                       <>
@@ -86,6 +162,11 @@ const StdUploadDocModal = ({ setUpload, student }) => {
                     )}
                   </button>
                 </div>
+                {errorMsg.marksheet ? (
+                  <div className="text-danger small">{errorMsg.marksheet}</div>
+                ) : (
+                  <div className="text-success small">Upload max 5MB</div>
+                )}
               </div>
 
               {/* Diploma Upload */}
@@ -97,25 +178,34 @@ const StdUploadDocModal = ({ setUpload, student }) => {
                 <div className="d-flex gap-2">
                   <input
                     type="file"
+                    key={filekey.diploma}
                     className="form-control"
                     name="diploma"
-                    accept="image/*"
-                    onChange={(e) => {
-                      setFileDiploma({
-                        name: e.target.name,
-                        selectFile: e.target.files[0],
-                      });
-                    }}
+                    accept="image/*, application/pdf"
+                    onChange={handleFileChnage}
+                    disabled={loading.diploma}
                   />
 
                   <button
-                    className="btn btn-success"
-                    onClick={handleUploadDiploma}
-                    disabled={!fileDiploma.selectFile}
+                    className="btn btn-success d-flex align-items-center"
+                    onClick={() => handleUploadFiles("diploma")}
+                    disabled={!files.diploma.selectFile || loading.diploma}
                   >
-                    Upload
+                    {loading.diploma ? (
+                      <>
+                        <span className="spinner-border spinner-border-sm me-2"></span>
+                        Uploading...
+                      </>
+                    ) : (
+                      "Upload"
+                    )}
                   </button>
                 </div>
+                {errorMsg.diploma ? (
+                  <div className="text-danger small">{errorMsg.diploma}</div>
+                ) : (
+                  <div className="text-success small">Upload max 5MB</div>
+                )}
               </div>
             </div>
             <br />

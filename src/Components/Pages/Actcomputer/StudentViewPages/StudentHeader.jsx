@@ -1,7 +1,4 @@
 import React, { useState } from "react";
-import { studentData } from "../../../../DemoData/LibarySeat";
-import StdCompleted from "../../Modal/ActComputer/StdCompleted";
-
 const StudentHeader = ({ student, setPayFee, setComplete, setUpload }) => {
   return (
     <>
@@ -21,24 +18,25 @@ const StudentHeader = ({ student, setPayFee, setComplete, setUpload }) => {
               {/* Info */}
               <div>
                 <h5 className="mb-1">
-                  {student.stdName}{" "}
+                  {student?.stdName}{" "}
                   <span
-                    className={`badge small ${student.isDeleted ? "bg-danger" : "bg-success"}`}
+                    className={`badge small ${student?.isDeleted ? "bg-danger" : "bg-success"}`}
                   >
-                    {student.isDeleted ? "Inactive" : "Active"}
+                    {student?.isDeleted ? "Inactive" : "Active"}
                   </span>
                 </h5>
 
                 <div className="text-muted small">
                   🏫{" "}
                   <strong>
-                    {student.courseId.courseName}{" "}
-                    <span>({student.courseId.courseFullName})</span>
+                    {student?.courseId?.courseName}{" "}
+                    <span>({student?.courseId?.courseFullName})</span>
                   </strong>
                 </div>
 
                 <div className="text-muted small">
-                  📞 +91 {student.stdPhone} | <span>📍 {student.stdCity}</span>
+                  📞 +91 {student?.stdPhone} |{" "}
+                  <span>📍 {student?.stdCity}</span>
                 </div>
               </div>
             </div>

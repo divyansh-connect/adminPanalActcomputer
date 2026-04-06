@@ -421,7 +421,8 @@ const FormFill = ({
               </label>
               <div>
                 <small className="text-muted col-md-3">
-                  Photo must be less than 1MB and maximum 400×400 pixels.
+                  Photo must be less than 1MB and maximum 500×500 pixels and
+                  JPG, JPEG, PNG only.
                 </small>
               </div>
             </div>

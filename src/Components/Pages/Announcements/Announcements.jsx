@@ -1,28 +1,51 @@
-import React from "react";
+import React, { useEffect } from "react";
 import AddAnnouncement from "./AddAnnouncement";
 import ShowAnnouncement from "./ShowAnnouncement";
 import { useState } from "react";
 import AnnouncementsSkeleton from "../Skeleton/AnnouncementsSkeleton";
+import { getinstituteAnnouncement } from "../../../Services/InstitudeServices";
 
 const Announcements = () => {
-  const [refresh, setRefresh] = useState(false);
   const [loading, setLoading] = useState(true);
+  const [fetch, setFetch] = useState("");
+  const [announcementList, setAnnouncementList] = useState([]);
+
+  useEffect(() => {
+    const listsCall = async () => {
+      setLoading(true);
+      try {
+        const response = await getinstituteAnnouncement();
+        if (!response.success) {
+          return setFetch(error.message || "Announcement find failed");
+        }
+        setAnnouncementList(response.data);
+      } catch (error) {
+        if (error.message === "Unauthorized") return;
+        return setFetch(error.message || "Server error");
+      } finally {
+        setLoading(false);
+      }
+    };
+    listsCall();
+  }, []);
 
   return (
     <>
-      <h3 className="mb-3">Manage Announcements</h3>
       <div className="row ">
         <div className="col-12">
-          <AddAnnouncement setRefresh={setRefresh} />
+          <AddAnnouncement setAnnouncementList={setAnnouncementList} />
         </div>
         <div className="col-12 ">
-          {loading && <AnnouncementsSkeleton />}
-
-          <ShowAnnouncement
-            setLoading={setLoading}
-            refresh={refresh}
-            setRefresh={setRefresh}
-          />
+          {loading ? (
+            <AnnouncementsSkeleton />
+          ) : (
+            <ShowAnnouncement
+              announcementList={announcementList}
+              setAnnouncementList={setAnnouncementList}
+              fetch={fetch}
+              setFetch={setFetch}
+            />
+          )}
         </div>
       </div>
     </>

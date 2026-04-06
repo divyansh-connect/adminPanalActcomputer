@@ -21,8 +21,8 @@ const StdAdmission = () => {
       })
       .catch((err) => {
         setServerMsg("Couse not available");
-      }, []);
-  });
+      });
+  }, []);
 
   const handlePrint = useReactToPrint({
     contentRef: printRef,
@@ -51,17 +51,17 @@ const StdAdmission = () => {
       img.src = URL.createObjectURL(file);
 
       img.onload = async () => {
-        if (img.width > 400 || img.height > 400) {
+        if (img.width > 500 || img.height > 500) {
           fileRef.current.value = "";
           setIsUploading(false);
           return setErrShow({
-            stdPhoto: "Image dimensions must be 400x400 pixel or smaller",
+            stdPhoto: "Image dimensions must be 500x500 pixel or smaller",
           });
         }
         //  Api Call for upload
         const response = await stdAdmUpload(file);
         if (response) {
-          setPreview(response.uploadUrl);
+          setPreview(response.uploadUrl || "N/A");
         }
         setIsUploading(false);
       };

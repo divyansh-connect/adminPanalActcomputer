@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { institudeAnnouncement } from "../../../Services/InstitudeServices";
 
-const AddAnnouncement = ({ setRefresh }) => {
+const AddAnnouncement = ({ setAnnouncementList }) => {
   const [validator, setValidator] = useState({});
   const [announcement, setAnnouncement] = useState({
     title: "",
@@ -40,10 +40,8 @@ const AddAnnouncement = ({ setRefresh }) => {
         description: "",
       });
       setValidator({ success: response.message });
-      setRefresh((prew) => !prew);
+      setAnnouncementList((prev) => [response.data, ...prev]);
     } catch (error) {
-      console.log(error.message);
-
       if (error.message === "Unauthorized") {
         setValidator({ success: "Session expired. Please login again." });
         return;

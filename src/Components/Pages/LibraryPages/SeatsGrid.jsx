@@ -43,7 +43,7 @@ const SeatsGrid = () => {
           <div className="row g-3 justify-content-center">
             {loading && <SeatsGridSkeleton />}
             {error && <FailedFetch />}
-            {seats.map((seat) => (
+            {seats?.map((seat) => (
               <div
                 key={seat.id}
                 className="seatGrid-div col-3 col-sm-2 col-md-2 col-lg-2"

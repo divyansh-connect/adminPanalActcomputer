@@ -1,28 +1,29 @@
 import React from "react";
-import { studentData } from "../../../../DemoData/LibarySeat";
 
 const StudentDetails = ({ student }) => {
   return (
-    <div className=" d-none d-sm-block container-fluid mb-3 px-0">
-      <div className="card shadow-sm border-0 ">
-        <div className="card-body fees">
-          <h6 className="mb-3 fw-bold">Student Details</h6>
+    <div className=" d-none d-sm-block container-fluid mb-3 px-0 card shadow-sm">
+      <div className="card ">
+        <div className="card-header">
+          <h5>🎓 Student Details</h5>
+        </div>
 
-          <div className="row bg-light rounded p-2 h-100">
+        <div className="card-body fees">
+          <div className="row p-2 h-100">
             {/* Column 1 */}
             <div className="col-sm-6 col-lg-4 ">
               <p className="mb-2">
-                <strong>Father:</strong> {student.stdFathOrHus}
+                <strong>Father:</strong> {student?.stdFathOrHus}
               </p>
               <p className="mb-2">
-                <strong>Mother:</strong> {student.stdMother}
+                <strong>Mother:</strong> {student?.stdMother}
               </p>
               <p className="mb-2">
                 <strong>DOB:</strong>{" "}
-                {new Date(student.stdDOB).toLocaleDateString()}
+                {new Date(student?.stdDOB).toLocaleDateString()}
               </p>
               <p className="mb-2">
-                <strong>Gender:</strong> {student.stdGender}
+                <strong>Gender:</strong> {student?.stdGender}
               </p>
             </div>
 
@@ -30,31 +31,31 @@ const StudentDetails = ({ student }) => {
             <div className="col-sm-6 col-lg-4 ">
               <p className="mb-2">
                 <strong>Adm Date:</strong>{" "}
-                {new Date(student.admissionDate).toLocaleDateString()}
+                {new Date(student?.admissionDate).toLocaleDateString()}
               </p>
               <p className="mb-2">
-                <strong>Medium:</strong> {student.courseMedium.toUpperCase()}
+                <strong>Medium:</strong> {student?.courseMedium?.toUpperCase()}
               </p>
               <p className="mb-2">
-                <strong>Session:</strong> {student.admissionSession}
+                <strong>Session:</strong> {student?.admissionSession}
               </p>
               <p className="mb-2">
-                <strong>Category:</strong> {student.stdCategory.toUpperCase()}
+                <strong>Category:</strong> {student?.stdCategory?.toUpperCase()}
               </p>
             </div>
 
             {/* Column 3 */}
             <div className="d-none d-lg-block col-lg-4 ">
               <p className="mb-2">
-                <strong>Aadhar:</strong> {student.stdAadhar}
+                <strong>Aadhar:</strong> {student?.stdAadhar}
               </p>
               <p className="mb-2">
                 <strong>Email:</strong>{" "}
-                {student.stdEmail ? student.stdEmail : "N/A"}
+                {student.stdEmail ? student?.stdEmail : "N/A"}
               </p>
               <p className="mb-2">
-                <strong>Address:</strong> {student.stdAddresh || "N/A"},{" "}
-                {student.stdCity} {student.stdState} {student.stdPinCode}
+                <strong>Address:</strong> {student?.stdAddresh || "N/A"},{" "}
+                {student?.stdCity} {student?.stdState} {student?.stdPinCode}
               </p>
             </div>
           </div>

@@ -1,10 +1,8 @@
 import React from "react";
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
 import { payStdFee } from "../../../Services/InstitudeServices";
 
-const StudentPayFee = ({ setRefresh, stdPayments, setPayFee, student }) => {
-  const navigate = useNavigate();
+const StudentPayFee = ({ setRefresh, setStdPayments, setPayFee, student }) => {
   const [amount, setAmount] = useState("");
   const [feeType, setFeeType] = useState("");
   const [method, setMethod] = useState("");
@@ -14,9 +12,7 @@ const StudentPayFee = ({ setRefresh, stdPayments, setPayFee, student }) => {
   const [valueError, setValueError] = useState({});
 
   const totalFees = student.courseId.courseTotalFees;
-  const totalPaid = stdPayments?.reduce((acc, p) => {
-    return (acc += p?.amount);
-  }, 0);
+  const totalPaid = student.totalPaid;
   const remaining = totalFees - totalPaid;
 
   const handlePayfee = async (e, id) => {
@@ -53,8 +49,13 @@ const StudentPayFee = ({ setRefresh, stdPayments, setPayFee, student }) => {
       if (!response.success) {
         setValueError({ errPay: response.message || "Payment Failed" });
       }
+      if (typeof setStdPayments === "function") {
+        setStdPayments((prev) => [response.data, ...prev]);
+      }
+      if (typeof setRefresh === "function") {
+        setRefresh((prev) => !prev);
+      }
       setPayFee(false);
-      setRefresh((prew) => !prew);
     } catch (error) {
       if (error.message === "Unauthorized") return;
       setValueError({ errPay: error.message || "Server Failed" });

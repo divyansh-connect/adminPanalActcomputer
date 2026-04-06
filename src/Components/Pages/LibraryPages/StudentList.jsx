@@ -62,7 +62,7 @@ const StudentsList = () => {
                     </thead>
 
                     <tbody className="">
-                      {students.map((std) => {
+                      {students?.map((std) => {
                         const expiry = new Date(std.vaildDate).setHours(
                           0,
                           0,
@@ -73,7 +73,13 @@ const StudentsList = () => {
                         return (
                           <tr key={std.id}>
                             <td>
-                              <span className="badge rounded-pill bg-info text-dark px-2 py-1 ">
+                              <span
+                                className="badge rounded px-3 py-2 "
+                                style={{
+                                  background: "#e7f1ff",
+                                  color: "#0d6efd",
+                                }}
+                              >
                                 {" "}
                                 Seat {std.seat}{" "}
                               </span>
@@ -101,23 +107,23 @@ const StudentsList = () => {
                             </td>
                             <td>
                               {std.amount === "pending" ? (
-                                <span className="badge bg-warning text-dark">
-                                  Pending
+                                <span className="badge bg-warning text-dark py-2">
+                                  Unpaid
                                 </span>
                               ) : (
                                 <span
-                                  className={`badge ${
+                                  className={`badge px-3 py-2 ${
                                     isExpired ? "bg-danger" : "bg-success"
                                   }`}
                                 >
-                                  {isExpired ? "Unpaid" : "Paid"}
+                                  {isExpired ? "Due" : "Paid"}
                                 </span>
                               )}
                             </td>
                             <td>
                               <Link
                                 to={`/library/student/${std.id}`}
-                                className="btn btn-sm btn-link"
+                                className="badge bg-primary nav-link px-3 py-2"
                               >
                                 View
                               </Link>
@@ -140,57 +146,61 @@ const StudentsList = () => {
           <FailedFetch />
         ) : (
           <>
-            {students.map((std) => {
+            {students?.map((std) => {
               const expiry = new Date(std.vaildDate).setHours(0, 0, 0, 0);
               const isExpired = today > expiry;
               return (
-                <div key={std.id} className="card shadow-sm mb-3">
+                <div key={std.id} className="card shadow-sm mb-2">
                   <div className="card-body">
-                    <div className="d-flex justify-content-between mb-2 flex-wrap">
-                      <div className="d-flex flex-wrap gap-2">
-                        <h6 className="fw-bold mb-0">{std.name}</h6>
-                        {std.amount === "pending" && (
-                          <span className="badge bg-warning text-dark">
-                            Pending
+                    <div className="d-flex justify-content-between align-items-center mb-2 ">
+                      <h6 className="fw-bold mb-0">{std.name}</h6>
+
+                      <div className="badge rounded pe-0">
+                        <span
+                          className=" rounded-start px-2 py-1"
+                          style={{ background: "#d1f5f0", color: "#0f766e" }}
+                        >
+                          Seat {std.seat}
+                        </span>
+                        {std.amount === "pending" ? (
+                          <span className=" rounded-end bg-warning text-dark px-2 py-1">
+                            Unpaid
+                          </span>
+                        ) : (
+                          <span
+                            className={` rounded-end px-2 py-1 ${
+                              isExpired ? "bg-danger" : "bg-success"
+                            }`}
+                          >
+                            {isExpired ? "Due" : "Paid"}
                           </span>
                         )}
                       </div>
-
-                      <span className=" badge rounded-pill bg-info text-dark px-2 py-1">
-                        Seat {std.seat}
-                      </span>
                     </div>
 
-                    <p className="mb-1 small">
-                      📅 Join:{" "}
-                      {new Date(std.joinDate).toLocaleDateString("en-IN", {
-                        day: "2-digit",
-                        month: "short",
-                        year: "numeric",
-                      })}
-                    </p>
+                    <div className="d-flex justify-content-between align-items-center mb-2 ">
+                      <p className="mb-0 small">
+                        <strong> Expiry: </strong>
+                        {new Date(std.vaildDate).toLocaleDateString("en-IN", {
+                          day: "2-digit",
+                          month: "short",
+                          year: "numeric",
+                        })}
+                      </p>
+                    </div>
 
-                    <p className="mb-2 small">
-                      ⏳ Expiry:{" "}
-                      {new Date(std.vaildDate).toLocaleDateString("en-IN", {
-                        day: "2-digit",
-                        month: "short",
-                        year: "numeric",
-                      })}
-                    </p>
-
-                    <div className="d-flex justify-content-between align-items-center">
-                      <span
-                        className={`badge ${
-                          isExpired ? "bg-danger" : "bg-success"
-                        }`}
-                      >
-                        {isExpired ? "Unpaid" : "Paid"}
-                      </span>
-
+                    <div className="d-flex justify-content-between mb-2 ">
+                      <p className="mb-0 small">
+                        <strong> Join Date: </strong>
+                        {new Date(std.joinDate).toLocaleDateString("en-IN", {
+                          day: "2-digit",
+                          month: "short",
+                          year: "numeric",
+                        })}
+                      </p>
                       <Link
                         to={`/library/student/${std.id}`}
-                        className="btn btn-sm btn-link"
+                        className="badge bg-primary nav-link px-4 py-2"
                       >
                         View
                       </Link>

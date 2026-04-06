@@ -16,7 +16,7 @@ const Login = () => {
     pineHealth()
       .then((data) => {})
       .catch((error) => {});
-  });
+  }, []);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -42,11 +42,12 @@ const Login = () => {
       <div
         className="d-md-none text-center mt-1 py-5 text-white"
         style={{
-          background: "linear-gradient(135deg, #0d6efd, #0a58ca)",
+          background: "linear-gradient(135deg, #e72c3f, #b02a37)",
         }}
       >
-        <h5 className="mb-0 fw-bold">Act Computer Institute</h5>
-        <p className="small mb-0">Admin Panel</p>
+        <h5 className="mb-0 fw-bold ">Act Computer Institute</h5>
+        <p className="small mb-0">Admin Panel </p>
+        <p className="small mb-0">(Only for Staff login)</p>
       </div>
 
       <div className="row flex-grow-1  m-0">
@@ -54,7 +55,7 @@ const Login = () => {
         <div
           className="col-md-6 d-none d-md-flex flex-column justify-content-center align-items-center text-white"
           style={{
-            background: "linear-gradient(135deg, #0d6efd, #0a58ca)",
+            background: "linear-gradient(135deg, #e72c3f, #b02a37)",
           }}
         >
           <h1 className="fw-bold">Act Computer Institute</h1>
@@ -72,6 +73,7 @@ const Login = () => {
               width: "100%",
               maxWidth: "380px",
               borderRadius: "16px",
+              boxShadow: "0 10px 30px rgba(0,0,0,0.1)",
             }}
           >
             {/* Heading */}
@@ -93,9 +95,13 @@ const Login = () => {
                 <label className="form-label small fw-semibold">UserID</label>
                 <input
                   type="text"
-                  className="form-control rounded-3"
+                  className="form-control rounded-3 border-0"
+                  style={{ backgroundColor: "#eef1f4" }}
                   placeholder="Enter email"
-                  onChange={(e) => setUsername(e.target.value)}
+                  onChange={(e) => {
+                    setUsername(e.target.value);
+                    setDisErr(false);
+                  }}
                   required
                 />
               </div>
@@ -115,15 +121,12 @@ const Login = () => {
               {/* Button */}
               <button
                 type="submit"
-                className="btn w-100 d-flex justify-content-center align-items-center"
-                disabled={isLogging}
+                className="btn w-100 d-flex justify-content-center align-items-center text-light rounded-3"
                 style={{
-                  background: "#0d6efd",
-                  color: "#fff",
-                  borderRadius: "10px",
-                  height: "42px",
-                  fontWeight: "500",
+                  background: "linear-gradient(135deg, #dc3545, #b02a37)",
+                  border: "none",
                 }}
+                disabled={isLogging}
               >
                 {isLogging ? (
                   <>

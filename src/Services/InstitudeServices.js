@@ -47,9 +47,11 @@ export const stdAdmSubmitting = async (stdAdm) => {
   }
 };
 
-export const getAllStudents = async () => {
+export const getAllStdAndPay = async (signal) => {
   try {
-    const response = await apiFetch(`${API_URL}/api/institude/students`);
+    const response = await apiFetch(`${API_URL}/api/institude/studentsandpay`, {
+      signal,
+    });
     const data = await response.json();
     if (!response.ok) {
       return {
@@ -125,7 +127,7 @@ export const payStdFee = async (payload) => {
   }
 };
 
-export const getAppPayments = async (sid) => {
+export const getAllPaymentsbyId = async (sid) => {
   try {
     const response = await apiFetch(`${API_URL}/api/institude/payments/${sid}`);
     const data = await response.json();
@@ -138,6 +140,60 @@ export const getAppPayments = async (sid) => {
     return {
       success: true,
       message: data.message || "Payments fetch successfully",
+      data: data.data,
+    };
+  } catch (error) {
+    if (error.message === "Unauthorized") throw error;
+    return {
+      success: false,
+      message: error.message || "Network error",
+    };
+  }
+};
+
+export const getAllDocument = async (sid) => {
+  try {
+    const response = await apiFetch(
+      `${API_URL}/api/institude/documents/${sid}`,
+    );
+    const data = await response.json();
+    if (!response.ok) {
+      return {
+        success: false,
+        message: data.message || "Not founded",
+      };
+    }
+    return {
+      success: true,
+      message: data.message || "Documents fetch successfully",
+      data: data.data,
+    };
+  } catch (error) {
+    if (error.message === "Unauthorized") throw error;
+    return {
+      success: false,
+      message: error.message || "Network error",
+    };
+  }
+};
+
+export const putMarkDocument = async (docid) => {
+  try {
+    const response = await apiFetch(
+      `${API_URL}/api/institude/documents/${docid}`,
+      { method: "PUT" },
+    );
+    const data = await response.json();
+
+    if (!response.ok) {
+      return {
+        success: false,
+        message: data.message || "Marked after sometime",
+      };
+    }
+    return {
+      success: true,
+      message: data.message || "Marked successfull",
       data: data.data,
     };
   } catch (error) {
@@ -166,7 +222,7 @@ export const institudeAnnouncement = async (payload) => {
     return {
       success: true,
       message: data.message || "Announcement uploaded",
-      data,
+      data: data.data,
     };
   } catch (error) {
     if ((error.message = "Unauthorized")) {
@@ -233,28 +289,23 @@ export const deleteInstituteAnnouncement = async (deleteId) => {
   }
 };
 
-export const uploadStudyMaterial = async (payload) => {
+export const getStudyMaterial = async () => {
   try {
-    const response = await apiFetch(`${API_URL}/api/stdyMaterialFile`, {
-      method: "POST",
-      body: JSON.stringify(payload),
-    });
+    const response = await apiFetch(`${API_URL}/api/stdyMaterialFile`);
     const data = await response.json();
     if (!response.ok) {
       return {
         success: false,
-        message: data.message || "Study material upload failed ",
+        message: data.message || "Study material fetch failed ",
       };
     }
     return {
       success: true,
-      message: data.message || "Study material upload successfully",
+      message: data.message || "Study material fetch successfully",
       data: data.data,
     };
   } catch (error) {
-    if (error.message === "Unauthorized") {
-      throw error;
-    }
+    if (error.message === "Unauthorized") throw error;
     return {
       success: false,
       message: error.message || "Network error",

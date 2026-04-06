@@ -1,29 +1,49 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useRef } from "react";
 import { useState } from "react";
 import StudyMaterialsUpload from "./StudyMaterialsUpload";
 import StudyMaterialsUploaded from "./StudyMaterialsUploaded";
+import { getStudyMaterial } from "../../../Services/InstitudeServices";
+import StudyMaterialsSkeleton from "../Skeleton/StudyMaterialsSkeleton";
 
 const StudyMaterials = () => {
   const [uploadMaterials, setUploadMaterials] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [fetch, setFetch] = useState("");
+
+  useEffect(() => {
+    const listsCall = async () => {
+      setLoading(true);
+      try {
+        const response = await getStudyMaterial();
+        if (!response.success) {
+          return;
+        }
+        setUploadMaterials(response.data);
+      } catch (error) {
+        if (error.message === "Unauthorized") return;
+        return;
+      } finally {
+        setLoading(false);
+      }
+    };
+    listsCall();
+  }, []);
 
   return (
     <>
-      <h3 className="mb-4">Manage Study Materials</h3>
-
       {/* Upload Form */}
-      <StudyMaterialsUpload
-        uploadMaterials={uploadMaterials}
-        setUploadMaterials={setUploadMaterials}
-      ></StudyMaterialsUpload>
+      <StudyMaterialsUpload setUploadMaterials={setUploadMaterials} />
 
       {/* Materials Table */}
-      {uploadMaterials.length === 0 ? (
-        ""
+      {loading ? (
+        <StudyMaterialsSkeleton />
       ) : (
         <StudyMaterialsUploaded
+          fetch={fetch}
           uploadMaterials={uploadMaterials}
-        ></StudyMaterialsUploaded>
+          setUploadMaterials={setUploadMaterials}
+        />
       )}
     </>
   );

@@ -4,73 +4,94 @@ import StudentFeeSummary from "./StudentFeeSummary";
 import StudentDetails from "./StudentDetails";
 import StudentPayemtHst from "./StudentPayemtHst";
 import StudentPayFee from "../StudentPayFee";
-import { studentData } from "../../../../DemoData/LibarySeat";
 import StdCompleted from "../../Modal/ActComputer/StdCompleted";
 import { useParams } from "react-router-dom";
 import NotFounded from "../../Error/NotFounded";
 import {
-  getAppPayments,
+  getAllDocument,
+  getAllPaymentsbyId,
   getInsituteStudent,
 } from "../../../../Services/InstitudeServices";
 import StdUploadDocModal from "../../Modal/ActComputer/StdUploadDocModal";
+import StudentDocument from "./StudentDocument";
+import StudentViewSkeleton from "../../Skeleton/StudentViewSkeleton";
 
 const StudentView = () => {
   const { stdId } = useParams();
   const [isLoading, setIsLoading] = useState(true);
-  const [refresh, setRefresh] = useState(false);
   const [err, setErr] = useState("");
   const [payFee, setPayFee] = useState(false);
   const [complete, setComplete] = useState(false);
   const [upload, setUpload] = useState(false);
   const [student, setStudent] = useState({});
   const [stdPayments, setStdPayments] = useState([]);
+  const [stdDoc, setStdDoc] = useState([]);
 
   useEffect(() => {
-    getInsituteStudent(stdId)
-      .then((res) => {
-        if (!res.success) {
-          setErr(res.message);
+    const fetchData = async () => {
+      setIsLoading(true);
+      try {
+        const [std, pay, doc] = await Promise.all([
+          getInsituteStudent(stdId),
+          getAllPaymentsbyId(stdId),
+          getAllDocument(stdId),
+        ]);
+
+        // Student handle
+        if (!std.success) {
+          setErr(std.message);
+        } else {
+          setStudent(std.data);
         }
-        setIsLoading(false);
-        setStudent(res.data);
-      })
-      .catch((error) => {
+
+        // Payment handle
+        if (!pay.success) {
+          setErr(pay.message);
+        } else {
+          setStdPayments(pay.data);
+        }
+
+        // Document handle
+        if (!doc.success) {
+          setErr(doc.message);
+        } else {
+          setStdDoc(doc.data);
+        }
+      } catch (error) {
         if (error.message === "Unauthorized") return;
         setErr("Something went wrong");
-      });
-
-    getAppPayments(stdId)
-      .then((res) => {
-        if (!res.success) {
-        }
-        setStdPayments(res.data);
-      })
-      .catch((error) => {
-        if (error.message === "Unauthorized") return;
-      });
-  }, [refresh]);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    fetchData();
+  }, []);
 
   if (err) return <NotFounded err={err} />;
   return (
     <>
       {isLoading ? (
-        "Loading"
+        <StudentViewSkeleton />
       ) : (
         <>
           {payFee && (
             <StudentPayFee
               student={student}
               setPayFee={setPayFee}
-              setRefresh={setRefresh}
-              stdPayments={stdPayments}
+              setStdPayments={setStdPayments}
+            />
+          )}
+          {upload && (
+            <StdUploadDocModal
+              setUpload={setUpload}
+              student={student}
+              setStdDoc={setStdDoc}
             />
           )}
           {complete && (
             <StdCompleted student={student} setComplete={setComplete} />
           )}
-          {upload && (
-            <StdUploadDocModal setUpload={setUpload} student={student} />
-          )}
+
           <StudentHeader
             student={student}
             setPayFee={setPayFee}
@@ -82,6 +103,7 @@ const StudentView = () => {
             stdPayments={stdPayments}
           />
           <StudentDetails student={student} />
+          <StudentDocument documents={stdDoc} setStdDoc={setStdDoc} />
           <StudentPayemtHst stdPayments={stdPayments} />
         </>
       )}

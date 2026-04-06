@@ -1,7 +1,7 @@
 import React from "react";
 
 const StudentFeeSummary = ({ stdCourse, stdPayments }) => {
-  const totalFees = stdCourse.courseTotalFees;
+  const totalFees = stdCourse?.courseTotalFees;
   const totalPaid = stdPayments.reduce((acc, p) => {
     return (acc += p?.amount);
   }, 0);

@@ -1,5 +1,5 @@
 import React from "react";
-import { useNavigate } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 
 const Navbar = ({ toggleSidebar }) => {
   const navigate = useNavigate();
@@ -13,9 +13,11 @@ const Navbar = ({ toggleSidebar }) => {
         ☰
       </button>
 
-      <span className="navbar-brand mb-0 h5">Dashboard</span>
+      <NavLink to="/" className="navbar-brand mb-0 h5">
+        <h4 className="fw-semibold m-0">Dashboard</h4>
+      </NavLink>
 
-      <div>
+      <div className="d-none d-md-block">
         <span className="me-3">Admin</span>
         <button
           className="btn btn-sm btn-outline-danger"

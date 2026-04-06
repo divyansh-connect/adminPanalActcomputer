@@ -4,11 +4,12 @@ const StudentPayemtHst = ({ stdPayments }) => {
   const payments = stdPayments;
 
   return (
-    <div className="container-fluid mb-3 px-0">
+    <div className="card container-fluid mb-3 px-0">
       <div className="card shadow-sm border-0">
+        <div className="card-header">
+          <h5>📊 Payment History</h5>
+        </div>
         <div className="card-body">
-          <h6 className="fw-bold mb-3">Payment History</h6>
-
           {/* Header */}
           <div className="row fw-bold border-bottom pb-2 mb-2 d-none d-md-flex">
             <div className="col-md-3">Amount</div>
@@ -27,13 +28,13 @@ const StudentPayemtHst = ({ stdPayments }) => {
                 {/* Amount */}
                 <div className="col-6 col-md-3 fw-semibold">
                   <span className="d-md-none fw-semibold">Amount: </span>₹{" "}
-                  {p.amount}
+                  {p?.amount}
                 </div>
 
                 {/* Date */}
                 <div className="col-6 col-md-3 small">
                   <span className="d-md-none fw-semibold">Date: </span>
-                  {new Date(p.createdAt).toLocaleDateString("en-IN", {
+                  {new Date(p?.createdAt).toLocaleDateString("en-IN", {
                     day: "2-digit",
                     month: "short",
                     year: "numeric",
@@ -43,13 +44,13 @@ const StudentPayemtHst = ({ stdPayments }) => {
                 {/* Method */}
                 <div className="col-6 col-md-3 small">
                   <span className="d-md-none fw-semibold">Method: </span>
-                  {p.paymentMethod}
+                  {p?.paymentMethod}
                 </div>
 
                 {/* Fee Type */}
                 <div className="col-6 col-md-3 small">
                   <span className="d-md-none fw-semibold">Fee Type: </span>
-                  {p.feeType === "other" ? p.note : p.feeType}
+                  {p.feeType === "other" ? p?.note : p?.feeType}
                 </div>
               </div>
             ))
