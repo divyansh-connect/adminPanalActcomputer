@@ -1,11 +1,8 @@
 import React from "react";
 import { useState } from "react";
-import { useRef } from "react";
-import { useNavigate } from "react-router-dom";
 import { payStdFee } from "../../../Services/InstitudeServices";
 
-const StudentPayFee = ({ setPayFee, student, setFeeRecipt }) => {
-  const navigate = useNavigate();
+const StudentPayFee = ({ setRefresh, setStdPayments, setPayFee, student }) => {
   const [amount, setAmount] = useState("");
   const [feeType, setFeeType] = useState("");
   const [method, setMethod] = useState("");
@@ -13,6 +10,10 @@ const StudentPayFee = ({ setPayFee, student, setFeeRecipt }) => {
   const [isSaving, setIsSaving] = useState(false);
   const [showCustom, setShowCustom] = useState(false);
   const [valueError, setValueError] = useState({});
+
+  const totalFees = student.courseId.courseTotalFees;
+  const totalPaid = student.totalPaid;
+  const remaining = totalFees - totalPaid;
 
   const handlePayfee = async (e, id) => {
     e.preventDefault();
@@ -48,11 +49,13 @@ const StudentPayFee = ({ setPayFee, student, setFeeRecipt }) => {
       if (!response.success) {
         setValueError({ errPay: response.message || "Payment Failed" });
       }
+      if (typeof setStdPayments === "function") {
+        setStdPayments((prev) => [response.data, ...prev]);
+      }
+      if (typeof setRefresh === "function") {
+        setRefresh((prev) => !prev);
+      }
       setPayFee(false);
-      setFeeRecipt({
-        success: response.success,
-        data: response.data,
-      });
     } catch (error) {
       if (error.message === "Unauthorized") return;
       setValueError({ errPay: error.message || "Server Failed" });
@@ -73,7 +76,7 @@ const StudentPayFee = ({ setPayFee, student, setFeeRecipt }) => {
         <div className="modal-dialog modal-dialog-centered modal-dialog-scrollable">
           <div className="modal-content">
             {/* Header */}
-            <div className="modal-header">
+            <div className="modal-header bg-warning">
               <h5 className="modal-title" id="institudeStudentFeeModal">
                 Pay Fee
               </h5>
@@ -109,17 +112,17 @@ const StudentPayFee = ({ setPayFee, student, setFeeRecipt }) => {
               <div className="border rounded p-2 mb-3 small">
                 <div className="d-flex justify-content-between">
                   <span>Total Fee</span>
-                  <span>₹ student totalFee</span>
+                  <span>₹ {student.courseId.courseTotalFees}</span>
                 </div>
 
                 <div className="d-flex justify-content-between">
                   <span>Paid</span>
-                  <span>₹ student paidFee</span>
+                  <span>₹ {totalPaid}</span>
                 </div>
 
                 <div className="d-flex justify-content-between fw-semibold text-danger">
                   <span>Remaining</span>
-                  <span>₹ remaining </span>
+                  <span>₹ {remaining} </span>
                 </div>
               </div>
 
@@ -143,11 +146,11 @@ const StudentPayFee = ({ setPayFee, student, setFeeRecipt }) => {
                     }}
                   >
                     <option value="">Select Fee Type</option>
-                    <option value="admission">Admission Fee</option>
-                    <option value="enrollment">Enrollment Fee</option>
-                    <option value="exam1">Examination Fee (1st Sem)</option>
-                    <option value="exam2">Examination Fee (2nd Sem)</option>
-                    <option value="monthly">Monthly Fee</option>
+                    <option value="Admission">Admission Fee</option>
+                    <option value="Enrollment">Enrollment Fee</option>
+                    <option value="1st Sem">Examination Fee (1st Sem)</option>
+                    <option value="2nd Sem">Examination Fee (2nd Sem)</option>
+                    <option value="Monthly">Monthly Fee</option>
                     <option value="other">Other</option>
                   </select>
                 </div>
@@ -227,8 +230,19 @@ const StudentPayFee = ({ setPayFee, student, setFeeRecipt }) => {
                     Cancel
                   </button>
 
-                  <button type="submit" className="btn btn-primary">
-                    Pay Fee
+                  <button
+                    type="submit"
+                    className="btn btn-success"
+                    disabled={isSaving}
+                  >
+                    {isSaving ? (
+                      <>
+                        <span className="spinner-border spinner-border-sm me-2"></span>
+                        Logging in...
+                      </>
+                    ) : (
+                      "Pay Now"
+                    )}
                   </button>
                 </div>
               </form>

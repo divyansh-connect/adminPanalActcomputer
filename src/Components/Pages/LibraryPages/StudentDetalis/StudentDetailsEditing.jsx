@@ -1,6 +1,5 @@
 import React from "react";
-
-import AddStudentCancel from "../../Modal/ModalLibraryStudent/AddStudentCancel";
+import { IoMdArrowRoundBack } from "react-icons/io";
 import { useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { useEffect } from "react";
@@ -10,6 +9,7 @@ import {
   putStdEdit,
 } from "../../../../Services/LibraryServices";
 import StdDetailsEditSkeleton from "../../Skeleton/StdDetailsEditSkeleton";
+import EditStudentCancel from "../../Modal/ModalLibraryStudent/EditStudentCancel";
 
 const StudentDetailsEditing = () => {
   const { stdId } = useParams();
@@ -19,7 +19,7 @@ const StudentDetailsEditing = () => {
   const [student, setStudent] = useState(null);
   const [showModal, setShowModal] = useState(false);
   const [seats, setSeats] = useState([]);
-  const [showPayModal, setShowPayModal] = useState(false);
+  const [err, setErr] = useState({});
   useEffect(() => {
     const fetchStudent = async () => {
       try {
@@ -38,7 +38,20 @@ const StudentDetailsEditing = () => {
   }, []);
 
   const handleSaveBtn = async () => {
+    const error = {};
     setSaving(true);
+    if (!student.name) {
+      error.name = "Name is required";
+    }
+    if (!student.phone) {
+      error.phone = "Phone number is required";
+    }
+    setErr(error);
+    if (Object.keys(error).length > 0) {
+      setSaving(false);
+      return;
+    }
+
     const stdChangePayload = {
       stdName: student.name.trim().replace(/\.+$/, ""),
       stdPhone: student.phone.trim(),
@@ -63,6 +76,12 @@ const StudentDetailsEditing = () => {
     }
   };
 
+  let isExpired = false;
+  if (student?.vaildDate) {
+    const today = new Date().setHours(0, 0, 0, 0);
+    const expiry = new Date(student.vaildDate).setHours(0, 0, 0, 0);
+    isExpired = today > expiry;
+  }
   return (
     <>
       {loading ? (
@@ -75,9 +94,9 @@ const StudentDetailsEditing = () => {
               <h3 className="fw-bold">Edit Student</h3>
               <Link
                 to={`/library/student/${student?.id}`}
-                className="btn btn-link btn-sm"
+                className="btn btn-link"
               >
-                Back
+                <IoMdArrowRoundBack /> Back
               </Link>
             </div>
 
@@ -103,6 +122,9 @@ const StudentDetailsEditing = () => {
                               setStudent({ ...student, name: e.target.value });
                             }}
                           />
+                          {err.name && (
+                            <div className="text-danger small">{err.name}</div>
+                          )}
                         </div>
 
                         <div className="mb-3">
@@ -123,6 +145,9 @@ const StudentDetailsEditing = () => {
                               setStudent({ ...student, phone: e.target.value });
                             }}
                           />
+                          {err.phone && (
+                            <div className="text-danger small">{err.phone}</div>
+                          )}
                         </div>
 
                         <div className="mb-3">
@@ -182,9 +207,15 @@ const StudentDetailsEditing = () => {
                         <div className="mb-3">
                           <label className="form-label">Join Date</label>
                           <input
-                            type="date"
+                            type="text"
                             className="form-control"
-                            defaultValue={student?.joinDate?.slice(0, 10)}
+                            defaultValue={new Date(
+                              student?.joinDate,
+                            ).toLocaleDateString("en-GB", {
+                              day: "2-digit",
+                              month: "short",
+                              year: "numeric",
+                            })}
                             disabled
                           />
 
@@ -196,9 +227,15 @@ const StudentDetailsEditing = () => {
                         <div className="mb-3">
                           <label className="form-label">Expiry Date</label>
                           <input
-                            type="date"
+                            type="text"
                             className="form-control"
-                            defaultValue={student?.vaildDate?.slice(0, 10)}
+                            defaultValue={new Date(
+                              student?.vaildDate,
+                            ).toLocaleDateString("en-GB", {
+                              day: "2-digit",
+                              month: "short",
+                              year: "numeric",
+                            })}
                             disabled
                           />
                           <small className="text-muted">
@@ -209,9 +246,15 @@ const StudentDetailsEditing = () => {
                         <div>
                           <label className="form-label">Status</label>
                           <div>
-                            <span className="badge bg-success px-3">
-                              Active
-                            </span>
+                            {isExpired ? (
+                              <span className="badge bg-danger px-3">
+                                Expired
+                              </span>
+                            ) : (
+                              <span className="badge bg-success px-3">
+                                Active
+                              </span>
+                            )}
                           </div>
                         </div>
                       </div>
@@ -240,7 +283,9 @@ const StudentDetailsEditing = () => {
               </div>
             </div>
           </div>
-          {showModal && <AddStudentCancel setShowModal={setShowModal} />}
+          {showModal && (
+            <EditStudentCancel student={student} setShowModal={setShowModal} />
+          )}
         </>
       )}
     </>

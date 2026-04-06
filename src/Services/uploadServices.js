@@ -1,17 +1,15 @@
 import { apiFetch } from "./api";
+const API_URL = import.meta.env.VITE_API_URL;
 
 export const stdAdmUpload = async (uploadFile) => {
   try {
     const formData = new FormData();
 
     formData.append("stdAdmPhoto", uploadFile);
-    const uploaded = await apiFetch(
-      "https://actcomputer.onrender.com/api/upload/stdAdmPhoto",
-      {
-        method: "POST",
-        body: formData,
-      },
-    );
+    const uploaded = await apiFetch(`${API_URL}/api/upload/stdAdmPhoto`, {
+      method: "POST",
+      body: formData,
+    });
 
     const data = await uploaded.json();
 
@@ -27,24 +25,92 @@ export const stdAdmUpload = async (uploadFile) => {
 export const uploadStudyMaterialFile = async (file) => {
   try {
     const formData = new FormData();
-    formData.append("stdyMaterialFile", file);
-    console.log(file);
+    formData.append("courses", file.courses);
+    formData.append("title", file.title);
+    formData.append("stdyMaterialFile", file.upload);
 
-    const uploaded = await apiFetch(
-      "https://actcomputer.onrender.com/api/upload/stdyMaterialFile",
+    const response = await apiFetch(
+      `${API_URL}/api/upload/stdyMaterialFileUpload`,
       {
         method: "POST",
         body: formData,
       },
     );
-    const data = uploaded.json();
-    if (!uploaded.ok) {
+    const data = await response.json();
+    if (!response.ok) {
       return {
         success: false,
-        message: error.message || "Failed to upload file",
+        message: data.message || "Failed to upload file",
       };
     }
-    return data.url;
+    return {
+      success: true,
+      message: data.message || "Upload successfully",
+      data: data.data,
+    };
+  } catch (error) {
+    if (error.message === "Unauthorized") throw error;
+    return {
+      success: false,
+      message: error.message || "Server failed",
+    };
+  }
+};
+
+export const uploadStdDoc = async (uploadFile) => {
+  try {
+    const formData = new FormData();
+
+    formData.append("studentId", uploadFile.studentId);
+    formData.append("fileType", uploadFile.type);
+    formData.append("stdDocumentFile", uploadFile.file);
+
+    const response = await apiFetch(`${API_URL}/api/upload/stdDocument`, {
+      method: "POST",
+      body: formData,
+    });
+    const data = await response.json();
+    if (!response.ok) {
+      return {
+        success: false,
+        message: data.message || "Document upload failed",
+      };
+    }
+    return {
+      success: true,
+      message: data.message || "Document uploaded successfully",
+      data: data.data,
+    };
+  } catch (error) {
+    if (error.message === "Unauthorized") throw error;
+    return {
+      success: false,
+      message: error.message || "Server failed",
+    };
+  }
+};
+
+export const deleteStdyMaterialFile = async (payload) => {
+  try {
+    const response = await apiFetch(
+      `${API_URL}/api/upload/deleteStudyMaterial`,
+      {
+        method: "POST",
+        body: JSON.stringify(payload),
+      },
+    );
+    const data = await response.json();
+    if (!response.ok) {
+      return {
+        success: false,
+        message: data.message || "Study material delete failed",
+      };
+    }
+    return {
+      success: true,
+      message: data.message || "Study material delete successfully",
+      data: data.data,
+    };
   } catch (error) {
     if (error.message === "Unauthorized") throw error;
     return {

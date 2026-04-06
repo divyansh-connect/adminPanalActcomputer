@@ -12,6 +12,9 @@ import Login from "../Components/Pages/Auth/Login";
 import { authLoader } from "../Routes/authLoader";
 import StdAdmission from "../Components/Pages/Actcomputer/StdAdmission";
 import StudentList from "../Components/Pages/Actcomputer/StudentList";
+import StudentView from "../Components/Pages/Actcomputer/StudentViewPages/StudentView";
+import HomePage from "../Components/Pages/HomePage";
+import Dashboard from "../Components/Pages/Dashboard/Dashboard";
 export const router = createBrowserRouter([
   {
     path: "/",
@@ -35,9 +38,11 @@ export const router = createBrowserRouter([
     path: "/",
     element: <AdminLayout />,
     children: [
-      // { index: true, element: <Dashboard /> },
+      { index: true, element: <HomePage /> },
+      { path: "/dashboard", element: <Dashboard /> },
       { path: "/studymaterials", element: <StudyMaterials /> },
       { path: "/students", element: <StudentList /> },
+      { path: "/students/:stdId", element: <StudentView /> },
       { path: "/announcements", element: <Announcements /> },
       { path: "/admissions", element: <StdAdmission /> },
     ],

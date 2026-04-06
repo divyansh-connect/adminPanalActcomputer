@@ -1,61 +1,59 @@
 import React from "react";
-import { useEffect } from "react";
-import {
-  deleteInstituteAnnouncement,
-  getinstituteAnnouncement,
-} from "../../../Services/InstitudeServices";
+import { deleteInstituteAnnouncement } from "../../../Services/InstitudeServices";
 import { useState } from "react";
 
-const ShowAnnouncement = ({ refresh, setRefresh, setLoading }) => {
-  const [fetch, setFetch] = useState("");
-
-  const [announcementList, setAnnouncementList] = useState([]);
-  useEffect(() => {
-    getinstituteAnnouncement()
-      .then((lists) => {
-        setLoading(false);
-        setAnnouncementList(lists.data);
-      })
-      .catch((error) => {
-        if (error.message === "Unauthorized") return;
-        return setFetch(error.message || "Server error");
-      });
-  }, [refresh]);
+const ShowAnnouncement = ({
+  announcementList,
+  setAnnouncementList,
+  fetch,
+  setFetch,
+}) => {
+  const [isDelete, setIsDelete] = useState(null);
 
   const handleDeleteAnnounced = async (deleteId) => {
+    setIsDelete(deleteId);
     try {
       const response = await deleteInstituteAnnouncement(deleteId);
       if (!response.success) {
         return setFetch(response.message);
       }
-      setRefresh((prew) => !prew);
+      setAnnouncementList((prev) =>
+        prev.filter((list) => list._id !== deleteId),
+      );
     } catch (error) {
       if (error.message === "Unauthorized")
         return setFetch("Please login the account first");
       setFetch(error.message);
+    } finally {
+      setIsDelete(null);
     }
   };
 
   return (
     <>
-      {announcementList.length > 0 && (
+      {announcementList?.length === 0 ? (
+        <div className="text-center mt-5">
+          <h5>No Announcement Found</h5>
+          <p>Upload new announcement to get started</p>
+        </div>
+      ) : (
         <div className="card shadow-sm">
           <div className="card-body">
-            <h5 className="mb-3">Published Announcements</h5>
+            <h5 className="mb-4">Published Announcements</h5>
 
-            <div className="row g-3">
+            <div className="row g-3 studyMaterialScroll">
               {/* Announcement Card */}
               {fetch ? (
                 <div className="text-muted fs-3 text-center py-5">{fetch}</div>
               ) : (
                 <>
-                  {announcementList.map((list) => (
-                    <div className="col-md-6 col-lg-4" key={list._id}>
-                      <div className="card h-100 border">
+                  {announcementList?.map((list) => (
+                    <div className="col-md-6 col-lg-4 mt-2" key={list._id}>
+                      <div className="card h-100 border shadow-sm">
                         <div className="card-body d-flex flex-column justify-content-between">
                           <div>
                             <h6 className="fw-semibold mb-2">{list.title}</h6>
-                            <p className="text-muted small mb-3">
+                            <p className="text-muted small mb-2">
                               {list.message}
                             </p>
                           </div>
@@ -73,8 +71,9 @@ const ShowAnnouncement = ({ refresh, setRefresh, setLoading }) => {
                               onClick={() => {
                                 handleDeleteAnnounced(list._id);
                               }}
+                              disabled={isDelete === list._id}
                             >
-                              Delete
+                              {isDelete === list._id ? "Deleting..." : "Delete"}
                             </button>
                           </div>
                         </div>
