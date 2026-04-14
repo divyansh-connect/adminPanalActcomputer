@@ -1,7 +1,11 @@
+import { jwtDecode } from "jwt-decode";
 import React from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 
 const Navbar = ({ toggleSidebar }) => {
+  const token = localStorage.getItem("token");
+  const user = jwtDecode(token);
+
   const navigate = useNavigate();
   return (
     <nav className="navbar navbar-light bg-white shadow-sm px-4">
@@ -18,7 +22,9 @@ const Navbar = ({ toggleSidebar }) => {
       </NavLink>
 
       <div className="d-none d-md-block">
-        <span className="me-3">Admin</span>
+        <span className="badge text-bg-info me-3">
+          {user.firstName.toUpperCase()}
+        </span>
         <button
           className="btn btn-sm btn-outline-danger"
           onClick={() => {

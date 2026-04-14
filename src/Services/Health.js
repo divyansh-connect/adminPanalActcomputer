@@ -1,10 +1,9 @@
 import { apiFetch } from "./api";
+const API_URL = import.meta.env.VITE_API_URL;
 
 export const pineHealth = async () => {
   try {
-    const response = await apiFetch(
-      `https://actcomputer.onrender.com/api/health`,
-    );
+    const response = await apiFetch(`${API_URL}/api/health`);
     const data = await response.json();
     if (!response.ok) {
       return {

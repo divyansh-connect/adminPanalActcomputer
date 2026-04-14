@@ -155,6 +155,72 @@
   overflow-y: auto;
   overflow-x: hidden;
 }
+
+.dashboardRightSection{
+  background: linear-gradient(135deg, #523557,#b458e5)
+}
+.dashboardR5ThisMonth{
+  background: linear-gradient(135deg, #73a2ed, #2563eb);
+color: white;
+}
+.dashboardR5LastMonth{
+  background: linear-gradient(135deg, #e3d084, #eab308);
+  color: #1f2937; 
+}
+.dashboardR5Year{
+  background: linear-gradient(135deg, #22c55e, #15803d);
+color: white;
+}
+.dashboardYear{
+  background: linear-gradient(135deg, #22c55e, #15803d);
+color: white;
+}
+.dashboardR4Remaining{
+  background: linear-gradient(135deg, #fb923c, #ea580c);
+  color: white;
+}
+.dashboardR4Paid{
+  background: linear-gradient(135deg, #6366f1, #4338ca);
+  color: white;
+}
+.dashboardStaff{
+  background: linear-gradient(135deg, #fb923c, #ea580c);
+  color: white;
+  
+}
+.dashboardStaffScroll{
+  overflow-y: auto;
+}
+/* Dashboard Data */
+
+.menu-card {
+  cursor: pointer;
+  border: none;
+  border-radius: 15px;
+  transition: all 0.3s ease;
+  transform: scale(1);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+/* Hover Animation */
+.menu-card:hover {
+  transform: scale(1.08) translateY(-5px);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+}
+
+/* Click Animation */
+.menu-card:active {
+  transform: scale(0.95);
+}
+
+/* Optional Glow Effect */
+.menu-card:hover::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 15px;
+  background: rgba(255, 255, 255, 0.1);
+}
 /* Mobile */
 @media (max-width: 767px) {
   .sidebar {

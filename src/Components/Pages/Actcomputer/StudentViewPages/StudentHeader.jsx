@@ -1,5 +1,10 @@
+import { jwtDecode } from "jwt-decode";
 import React, { useState } from "react";
+
 const StudentHeader = ({ student, setPayFee, setComplete, setUpload }) => {
+  const token = localStorage.getItem("token");
+  const user = jwtDecode(token);
+
   return (
     <>
       <div className="container-fluid bg-white shadow-sm p-3 mb-3 rounded">
@@ -61,15 +66,16 @@ const StudentHeader = ({ student, setPayFee, setComplete, setUpload }) => {
             >
               Upload Doc
             </button>
-
-            <button
-              className="btn btn-success btn-sm"
-              onClick={() => {
-                setComplete(true);
-              }}
-            >
-              Completed
-            </button>
+            {(user.role === "admin" || user.role === "head") && (
+              <button
+                className="btn btn-success btn-sm"
+                onClick={() => {
+                  setComplete(true);
+                }}
+              >
+                Completed
+              </button>
+            )}
           </div>
         </div>
       </div>

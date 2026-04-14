@@ -21,7 +21,6 @@ const StudyMaterialsUploaded = ({ uploadMaterials, setUploadMaterials }) => {
       if (!response.success) {
         return setErrMsg(response.message || "Study material delete failed");
       }
-      setErrMsg(response.message);
       setUploadMaterials((prev) => prev.filter((list) => list._id !== id));
     } catch (error) {
       if (error.message === "Unauthorized")
