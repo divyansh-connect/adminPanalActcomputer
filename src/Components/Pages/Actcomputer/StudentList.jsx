@@ -60,7 +60,7 @@ const StudentList = () => {
   };
   const getStatusClass = (status) => {
     if (status === "Fee Paid") return "bg-success";
-    if (status === "Balance") return "bg-info-subtle text-dark";
+    if (status === "Balance") return "balanceFee text-light";
     return "bg-danger";
   };
 
@@ -78,82 +78,92 @@ const StudentList = () => {
             />
           )}
 
-          <div className="container-fluid p-2 ">
-            <div className="card shadow-sm">
-              <div className="card-body">
-                {/* Header */}
-                <div className="d-flex justify-content-between align-items-center mb-3">
-                  <h5 className="mb-0">Students</h5>
+          <div className="card shadow-sm">
+            {/* Header */}
+            <div className="card-header">
+              <h5 className="my-2 py-2">Act Computer Students List</h5>
+              {/* Search */}
+              <input
+                type="text"
+                className="form-control mb-3"
+                placeholder="Search student..."
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
+              />
+            </div>
+            {/* above Md screen */}
+            <div
+              className="card-body pt-0 d-none d-md-block "
+              style={{ height: "70vh" }}
+            >
+              <div className="d-flex flex-column py-2 h-100">
+                {/* Header Row */}
+                <div className="row fw-bold border-bottom pb-2 mb-3">
+                  <div className="col-md-3">Name/ (Phone)</div>
+                  <div className="col-md-3">Father/ Husband</div>
+                  <div className="col-md-6 d-flex justify-content-evenly gap-2">
+                    <div>Course/ Status</div>
+                    <div>Action</div>
+                  </div>
                 </div>
 
-                {/* Search */}
-                <input
-                  type="text"
-                  className="form-control mb-3"
-                  placeholder="Search student..."
-                  value={search}
-                  onChange={(e) => setSearch(e.target.value)}
-                />
-
-                <div className="d-flex flex-column py-2">
-                  {/* Header Row */}
-                  <div className="d-none d-md-block">
-                    <div className="row text-center fw-semibold border-bottom pb-2 mb-2 ">
-                      <div className="col-md-2">Name</div>
-                      <div className="col-md-2">Father/Husband</div>
-                      <div className="col-md-2">Phone</div>
-                      <div className="col-md-2">Course</div>
-                      <div className="col-md-2">Status</div>
-                      <div className="col-md-2 ">Action</div>
-                    </div>
-                  </div>
-
-                  {/* Scrollable List */}
-                  <div className="students-scroll">
-                    {filtered?.map((s) => {
-                      const status = getStatus(s);
-                      return (
-                        <div
-                          key={s._id}
-                          className=" row align-items-center py-2 border-bottom "
-                        >
-                          <div className="col-md-2">{s.stdName}</div>
-                          <div className="col-md-2">{s.stdFathOrHus}</div>
-                          <div className="col-md-2">{s.stdPhone}</div>
-                          <div className="col-md-2">
-                            {s.courseId.courseName}
+                {/* Scrollable List */}
+                <div className="flex-grow-1 students-scroll">
+                  {filtered?.map((s) => {
+                    const status = getStatus(s);
+                    return (
+                      <div
+                        key={s._id}
+                        className="card p-2 px-4 mb-2 shadow-sm "
+                      >
+                        <div className="row d-flex justify-content-around align-items-center">
+                          <div className="col-md-3 px-2 px-lg-3">
+                            <strong>{s.stdName}</strong>
+                            <p className="small text-muted mb-1">
+                              ({s.stdPhone})
+                            </p>
                           </div>
-                          <div className="col-md-2 text-center">
-                            <span
-                              className={`badge px-4 py-2 ${getStatusClass(status)} `}
-                            >
-                              {status}
-                            </span>
-                          </div>
+                          <div className="col-md-3">{s.stdFathOrHus}</div>
 
-                          <div className="col-md-2 text-end">
-                            <Link
-                              to={`/students/${s._id}`}
-                              className="btn btn-sm btn-outline-primary me-2"
-                            >
-                              View
-                            </Link>
-                            <button
-                              className="btn btn-sm btn-warning"
-                              onClick={() => {
-                                handlePayBtn(s);
-                              }}
-                            >
-                              Pay Fee
-                            </button>
+                          <div className="col-md-6 d-flex justify-content-evenly">
+                            <div className="d-flex badge justify-content-end rounded w-50">
+                              <div
+                                className="col-8 col-lg-4 rounded-start py-2 px-1 text-dark "
+                                style={{ background: "#b9d4fa" }}
+                              >
+                                <strong>{s.courseId.courseName}</strong>
+                              </div>
+                              <div
+                                className={`rounded-end px-1 px-lg-2 py-2 ${getStatusClass(status)} `}
+                              >
+                                {status}
+                              </div>
+                            </div>
+                            <div className="badge rounded d-flex justify-content-center w-50 ">
+                              <Link
+                                to={`/students/${s._id}`}
+                                className="bg-primary text-light rounded-start py-2 px-2 text-decoration-none"
+                              >
+                                View
+                              </Link>
+                              <div
+                                className="bg-warning text-dark rounded-end py-2 px-2"
+                                onClick={() => {
+                                  handlePayBtn(s);
+                                }}
+                              >
+                                Pay Fee
+                              </div>
+                            </div>
                           </div>
                         </div>
-                      );
-                    })}
-                  </div>
+                      </div>
+                    );
+                  })}
                 </div>
               </div>
             </div>
+            {/* below Md screen */}
           </div>
         </>
       )}
