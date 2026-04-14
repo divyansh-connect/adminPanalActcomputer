@@ -8,6 +8,7 @@ import DashboardLeftUp from "./DashboardLeftUp";
 import DashboardStaff from "./DashboardStaff";
 import { getDashboardCourse } from "../../../Services/dashboard";
 import DashboardData from "./DashboardData";
+import DashboardFooter from "./DashboardFooter";
 
 const Dashboard = () => {
   const [fetchData, setFetchData] = useState([]);
@@ -17,16 +18,18 @@ const Dashboard = () => {
 
   useEffect(() => {
     const fetchCall = async () => {
+      setLoading(true);
       try {
         const response = await getDashboardCourse();
         if (!response.success) {
           return setFetchFailed(response.message);
         }
         setFetchData(response.data);
-        setLoading(false);
       } catch (error) {
         if (error.message === "Unauthorized") return;
         setFetchFailed(error.message);
+      } finally {
+        setLoading(false);
       }
     };
     fetchCall();
@@ -38,6 +41,12 @@ const Dashboard = () => {
         <div className="col-12">
           <DashboardHead fetchData={fetchData} thisMonth={thisMonth} />
         </div>
+        <div className="col-12 col-md-4">
+          <DashboardLibrary />
+        </div>
+        <div className="d-none d-md-block col-12 col-md-8">
+          <DashboardFee fetchData={fetchData} loading={loading} />
+        </div>
         <div className="col-12 col-md-5 dashboardRightSection rounded-3 mb-4 shadow py-3">
           <DashboardLeftUp setThisMonth={setThisMonth} />
           <DashboardLeftDown fetchData={fetchData} />
@@ -45,22 +54,19 @@ const Dashboard = () => {
         <div className="col-12 col-md-7">
           <DashboardRightCourse fetchData={fetchData} loading={loading} />
         </div>
-
-        <div className="col-12 col-md-4">
-          <DashboardLibrary />
+        <div className="col-12 col-md-4 mb-3" style={{ height: "55vh" }}>
+          <DashboardData />
         </div>
-        <div className="col-12 col-md-8 mb-3 " style={{ height: "52vh" }}>
+        <div className="col-12 col-md-8 mb-3 " style={{ height: "55vh" }}>
           <DashboardStaff />
         </div>
         <div className="col-12">
-          <DashboardData />
-        </div>
-        <div className="col-12">
-          <DashboardFee fetchData={fetchData} />
+          <hr />
+          <DashboardFooter />
         </div>
       </div>
     </>
   );
 };
-
+// 0b1c3d
 export default Dashboard;

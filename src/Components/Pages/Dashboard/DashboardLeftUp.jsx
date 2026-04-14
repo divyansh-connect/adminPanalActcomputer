@@ -26,7 +26,7 @@ const DashboardLeftUp = ({ setThisMonth }) => {
   }, []);
 
   return (
-    <div className="row g-4 m-auto pb-4">
+    <div className="row g-4 m-auto pb-3">
       {/* This Month */}
       <div className="col-12 ">
         <div className="card dashboardR5ThisMonth shadow-lg border-0 rounded-4 ">

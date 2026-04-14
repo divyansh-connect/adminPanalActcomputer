@@ -28,10 +28,10 @@ const DashboardLeftDown = ({ fetchData }) => {
   return (
     <div className="row m-auto">
       {/* Pending Students */}
-      <div className="col-6">
+      <div className="col-6 col-md-12 col-lg-6 mb-3">
         <div className="card shadow border-0 text-center">
           <div className="card-body rounded-top dashboardR4Remaining">
-            <h5 className=" fw-bold">Fees Remaining</h5>
+            <h6 className="fw-bold">Fees Remaining</h6>
           </div>
           <div className="py-2">
             <h6 className="mb-0 text-muted">Total Students</h6>
@@ -43,10 +43,10 @@ const DashboardLeftDown = ({ fetchData }) => {
       </div>
 
       {/* Completed Students */}
-      <div className="col-6">
+      <div className="col-6 col-md-12 col-lg-6">
         <div className="card shadow-sm border-0 text-center ">
           <div className="card-body rounded-top dashboardR4Paid">
-            <h5 className="fw-bold ">Fees Paid</h5>
+            <h6 className="fw-bold ">Fees Paid</h6>
           </div>
           <div className="py-2">
             <h6 className="mb-0 text-muted">Total Students</h6>

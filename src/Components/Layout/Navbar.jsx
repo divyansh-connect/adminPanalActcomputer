@@ -22,18 +22,31 @@ const Navbar = ({ toggleSidebar }) => {
       </NavLink>
 
       <div className="d-none d-md-block">
-        <span className="badge text-bg-info me-3">
-          {user.firstName.toUpperCase()}
-        </span>
-        <button
-          className="btn btn-sm btn-outline-danger"
-          onClick={() => {
-            localStorage.removeItem("token");
-            navigate("/auth/login");
-          }}
-        >
-          Logout
-        </button>
+        <div className="d-flex gap-3 justify-content-e">
+          <div className="d-flex flex-column small ">
+            <span className="badge text-bg-info ms-auto ">
+              {user.firstName.toUpperCase()}
+            </span>
+            <span className="text-dark">
+              {new Date().toLocaleDateString("en-GB", {
+                weekday: "short",
+                day: "2-digit",
+                month: "short",
+                year: "numeric",
+              })}
+            </span>
+          </div>
+
+          <button
+            className="btn btn-sm btn-outline-danger"
+            onClick={() => {
+              localStorage.removeItem("token");
+              navigate("/auth/login");
+            }}
+          >
+            Logout
+          </button>
+        </div>
       </div>
     </nav>
   );

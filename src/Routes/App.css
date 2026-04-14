@@ -20,7 +20,7 @@
 .sidebar {
   min-width: 230px;
   min-height: 100vh;
-  background-color: #0b1c3d;
+  /* background-color: #0b1c3d; */
   transition: all 0.3s ease;
 }
 
@@ -190,6 +190,7 @@ color: white;
 }
 .dashboardStaffScroll{
   overflow-y: auto;
+  overflow-x: hidden;
 }
 /* Dashboard Data */
 
