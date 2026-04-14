@@ -1,53 +1,36 @@
 import { createBrowserRouter } from "react-router-dom";
 import AdminLayout from "../Components/Layout/AdminLayout";
-import SeatsGrid from "../Components/Pages/LibraryPages/SeatsGrid";
-import StudyMaterials from "../Components/Pages/StudyMaterialsShow.jsx/StudyMaterials";
-import Announcements from "../Components/Pages/Announcements/Announcements";
 import Error404 from "../Components/Pages/Error/Error";
-import AddStudentFrom from "../Components/Pages/LibraryPages/AddStudentFrom";
-import StudentsList from "../Components/Pages/LibraryPages/StudentList";
-import StudentDetails from "../Components/Pages/LibraryPages/StudentDetalis";
-import StudentDetailsEditing from "../Components/Pages/LibraryPages/StudentDetalis/StudentDetailsEditing";
 import Login from "../Components/Pages/Auth/Login";
 import { authLoader } from "../Routes/authLoader";
-import StdAdmission from "../Components/Pages/Actcomputer/StdAdmission";
-import StudentList from "../Components/Pages/Actcomputer/StudentList";
-import StudentView from "../Components/Pages/Actcomputer/StudentViewPages/StudentView";
-import HomePage from "../Components/Pages/HomePage";
-import Dashboard from "../Components/Pages/Dashboard/Dashboard";
+import { roleLoader } from "./roleLoader";
+import Unauthorized from "../Components/Pages/Error/Unauthorized";
+import { routesConfig } from "./routesConfig";
+import SignUp from "../Components/Pages/Auth/SignUp";
+
 export const router = createBrowserRouter([
   {
     path: "/",
     element: <AdminLayout />,
-    children: [
-      { path: "/library", element: <StudentsList /> },
-      { path: "/library/student/:stdId", element: <StudentDetails /> },
-      {
-        path: "/library/student/edit/:stdId",
-        element: <StudentDetailsEditing />,
-      },
-      { path: "/library/seats", element: <SeatsGrid /> },
-      {
-        path: "/library/seats/add-student/:id/:seatNo",
-        element: <AddStudentFrom />,
-      },
-    ],
     loader: authLoader,
+    children: routesConfig.map((routes) => ({
+      path: routes.path,
+      element: <routes.element />,
+      loader: roleLoader(routes.roles),
+    })),
   },
   {
     path: "/",
     element: <AdminLayout />,
-    children: [
-      { index: true, element: <HomePage /> },
-      { path: "/dashboard", element: <Dashboard /> },
-      { path: "/studymaterials", element: <StudyMaterials /> },
-      { path: "/students", element: <StudentList /> },
-      { path: "/students/:stdId", element: <StudentView /> },
-      { path: "/announcements", element: <Announcements /> },
-      { path: "/admissions", element: <StdAdmission /> },
-    ],
     loader: authLoader,
+    children: [{ path: "/unauthorized", element: <Unauthorized /> }],
   },
+  { path: "/auth/signUp", element: <SignUp /> },
   { path: "/auth/login", element: <Login /> },
-  { path: "*", element: <Error404 /> },
+  {
+    path: "/",
+    element: <AdminLayout />,
+    loader: authLoader,
+    children: [{ path: "*", element: <Error404 /> }],
+  },
 ]);

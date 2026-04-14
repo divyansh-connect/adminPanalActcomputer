@@ -40,8 +40,8 @@ const AddStudentFrom = () => {
     if (!stdName) {
       newErrors.fullName = "Full Name is required";
     }
-    if (!/^\d{10}$/.test(stdPhone)) {
-      newErrors.phoneNum = "Phone must be 10 digits";
+    if (!/^[6-9]\d{9}$/.test(stdPhone)) {
+      newErrors.phoneNum = "Invalid phone number";
     }
     if (!stdJoin) {
       newErrors.joinDate = "Join Date is required";

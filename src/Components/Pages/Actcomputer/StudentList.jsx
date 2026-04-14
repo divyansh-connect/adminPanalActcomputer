@@ -34,7 +34,6 @@ const StudentList = () => {
     const fetchData = async () => {
       try {
         const std = await getAllStdAndPay(controller.signal);
-
         // handle Student
         if (!std.success) {
         } else {
@@ -71,97 +70,91 @@ const StudentList = () => {
         <StdsListsSkeleton />
       ) : (
         <>
-          {filtered?.length === 0 ? (
-            <FailedFetch />
-          ) : (
-            <>
-              {payFee && (
-                <StudentPayFee
-                  setRefresh={setRefresh}
-                  student={selectStudent}
-                  setPayFee={setPayFee}
+          {payFee && (
+            <StudentPayFee
+              setRefresh={setRefresh}
+              student={selectStudent}
+              setPayFee={setPayFee}
+            />
+          )}
+
+          <div className="container-fluid p-2 ">
+            <div className="card shadow-sm">
+              <div className="card-body">
+                {/* Header */}
+                <div className="d-flex justify-content-between align-items-center mb-3">
+                  <h5 className="mb-0">Students</h5>
+                </div>
+
+                {/* Search */}
+                <input
+                  type="text"
+                  className="form-control mb-3"
+                  placeholder="Search student..."
+                  value={search}
+                  onChange={(e) => setSearch(e.target.value)}
                 />
-              )}
 
-              <div className="container-fluid p-2 ">
-                <div className="card shadow-sm">
-                  <div className="card-body">
-                    {/* Header */}
-                    <div className="d-flex justify-content-between align-items-center mb-3">
-                      <h5 className="mb-0">Students</h5>
+                <div className="d-flex flex-column py-2">
+                  {/* Header Row */}
+                  <div className="d-none d-md-block">
+                    <div className="row text-center fw-semibold border-bottom pb-2 mb-2 ">
+                      <div className="col-md-2">Name</div>
+                      <div className="col-md-2">Father/Husband</div>
+                      <div className="col-md-2">Phone</div>
+                      <div className="col-md-2">Course</div>
+                      <div className="col-md-2">Status</div>
+                      <div className="col-md-2 ">Action</div>
                     </div>
+                  </div>
 
-                    {/* Search */}
-                    <input
-                      type="text"
-                      className="form-control mb-3"
-                      placeholder="Search student..."
-                      value={search}
-                      onChange={(e) => setSearch(e.target.value)}
-                    />
-
-                    <div className="d-flex flex-column py-2">
-                      {/* Header Row */}
-                      <div className="d-none d-md-block">
-                        <div className="row text-center fw-semibold border-bottom pb-2 mb-2 ">
-                          <div className="col-md-2">Name</div>
-                          <div className="col-md-2">Father/Husband</div>
-                          <div className="col-md-2">Phone</div>
-                          <div className="col-md-2">Course</div>
-                          <div className="col-md-2">Status</div>
-                          <div className="col-md-2 ">Action</div>
-                        </div>
-                      </div>
-
-                      {/* Scrollable List */}
-                      <div className="students-scroll">
-                        {filtered?.map((s) => {
-                          const status = getStatus(s);
-                          return (
-                            <div
-                              key={s._id}
-                              className="row align-items-center py-2 border-bottom "
+                  {/* Scrollable List */}
+                  <div className="students-scroll">
+                    {filtered?.map((s) => {
+                      const status = getStatus(s);
+                      return (
+                        <div
+                          key={s._id}
+                          className=" row align-items-center py-2 border-bottom "
+                        >
+                          <div className="col-md-2">{s.stdName}</div>
+                          <div className="col-md-2">{s.stdFathOrHus}</div>
+                          <div className="col-md-2">{s.stdPhone}</div>
+                          <div className="col-md-2">
+                            {s.courseId.courseName}
+                          </div>
+                          <div className="col-md-2 text-center">
+                            <span
+                              className={`badge px-4 py-2 ${getStatusClass(status)} `}
                             >
-                              <div className="col-md-2">{s.stdName}</div>
-                              <div className="col-md-2">{s.stdFathOrHus}</div>
-                              <div className="col-md-2">{s.stdPhone}</div>
-                              <div className="col-md-2">
-                                {s.courseId.courseName}
-                              </div>
-                              <div className="col-md-2 text-center">
-                                <span
-                                  className={`badge px-4 py-2 ${getStatusClass(status)} `}
-                                >
-                                  {status}
-                                </span>
-                              </div>
+                              {status}
+                            </span>
+                          </div>
 
-                              <div className="col-md-2 text-end">
-                                <Link
-                                  to={`/students/${s._id}`}
-                                  className="btn btn-sm btn-outline-primary me-2"
-                                >
-                                  View
-                                </Link>
-                                <button
-                                  className="btn btn-sm btn-warning"
-                                  onClick={() => {
-                                    handlePayBtn(s);
-                                  }}
-                                >
-                                  Pay Fee
-                                </button>
-                              </div>
-                            </div>
-                          );
-                        })}
-                      </div>
-                    </div>
+                          <div className="col-md-2 text-end">
+                            <Link
+                              to={`/students/${s._id}`}
+                              className="btn btn-sm btn-outline-primary me-2"
+                            >
+                              View
+                            </Link>
+                            <button
+                              className="btn btn-sm btn-warning"
+                              onClick={() => {
+                                handlePayBtn(s);
+                              }}
+                            >
+                              Pay Fee
+                            </button>
+                          </div>
+                        </div>
+                      );
+                    })}
                   </div>
                 </div>
               </div>
-            </>
-          )}
+            </div>
+          </div>
         </>
       )}
     </>

@@ -1,8 +1,12 @@
 import React from "react";
 import { NavLink, useNavigate } from "react-router-dom";
+import { routesConfig } from "../../Routes/routesConfig";
+import { getUserRole } from "../../utils/authRole";
 
 const Sidebar = ({ closeSidebar }) => {
   const navigate = useNavigate();
+  const user = getUserRole();
+
   const linkClass = "nav-link rounded-start";
   return (
     <>
@@ -21,77 +25,24 @@ const Sidebar = ({ closeSidebar }) => {
 
         {/* Navigation */}
         <ul className="nav flex-column p-3 pe-0 gap-2">
-          <li>
-            <NavLink
-              to="/dashboard"
-              className={({ isActive }) =>
-                `${linkClass} ${isActive ? "bg-light text-dark " : "text-light"}`
-              }
-              onClick={closeSidebar}
-            >
-              📊 Dashboard
-            </NavLink>
-          </li>
-
-          <li>
-            <NavLink
-              to="library"
-              className={({ isActive }) =>
-                `${linkClass} ${isActive ? "bg-light text-dark " : "text-light"}`
-              }
-              onClick={closeSidebar}
-            >
-              📚 Library
-            </NavLink>
-          </li>
-
-          <li>
-            <NavLink
-              to="/admissions"
-              className={({ isActive }) =>
-                `${linkClass} ${isActive ? "bg-light text-dark " : "text-light"}`
-              }
-              onClick={closeSidebar}
-            >
-              📝 New Admission
-            </NavLink>
-          </li>
-
-          <li>
-            <NavLink
-              to="/students"
-              className={({ isActive }) =>
-                `${linkClass} ${isActive ? "bg-light text-dark " : "text-light"}`
-              }
-              onClick={closeSidebar}
-            >
-              👨‍🎓 Students
-            </NavLink>
-          </li>
-
-          <li>
-            <NavLink
-              to="/studymaterials"
-              className={({ isActive }) =>
-                `${linkClass} ${isActive ? "bg-light text-dark " : "text-light"}`
-              }
-              onClick={closeSidebar}
-            >
-              📂 Study Materials
-            </NavLink>
-          </li>
-
-          <li>
-            <NavLink
-              to="/announcements"
-              className={({ isActive }) =>
-                `${linkClass} ${isActive ? "bg-light text-dark " : "text-light"}`
-              }
-              onClick={closeSidebar}
-            >
-              📢 Announcements
-            </NavLink>
-          </li>
+          {routesConfig
+            .filter((route) => route.name)
+            .map((sidebar) => {
+              if (!sidebar.roles.includes(user?.role)) return null;
+              return (
+                <li key={sidebar.path}>
+                  <NavLink
+                    to={sidebar.path}
+                    className={({ isActive }) =>
+                      `${linkClass} ${isActive ? "bg-light text-dark " : "text-light"}`
+                    }
+                    onClick={closeSidebar}
+                  >
+                    {sidebar.name}
+                  </NavLink>
+                </li>
+              );
+            })}
         </ul>
 
         <ul className="nav d-block d-md-none mt-auto mb-3 px-3 pb-3">

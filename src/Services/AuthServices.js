@@ -1,5 +1,6 @@
 import { apiFetch } from "./api";
 const API_URL = import.meta.env.VITE_API_URL;
+
 export const getLoggedVerify = async (token) => {
   try {
     const verify = await apiFetch(`${API_URL}/api/auth/verify`);
@@ -10,8 +11,6 @@ export const getLoggedVerify = async (token) => {
 };
 
 export const postAuthLogin = async (payload) => {
-  console.log(API_URL);
-
   try {
     const response = await fetch(`${API_URL}/api/auth/login`, {
       method: "POST",
@@ -28,5 +27,36 @@ export const postAuthLogin = async (payload) => {
     return data;
   } catch (error) {
     throw error;
+  }
+};
+
+export const postAuthSignUp = async (payload) => {
+  try {
+    const response = await fetch(`${API_URL}/api/auth/register`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(payload),
+    });
+    const data = await response.json();
+    if (!response.ok) {
+      return {
+        success: false,
+        message: data.message || "Registration failed",
+        data: data.data,
+      };
+    }
+    return {
+      success: true,
+      message: data.message || "Register successfully",
+      data: data.data,
+    };
+  } catch (error) {
+    if (error.message === "Unauthorized") throw error;
+    return {
+      success: false,
+      message: "Network error",
+    };
   }
 };
