@@ -61,7 +61,6 @@
 }
 
 /* Error Pages */
-
 .error-bg {
   background-color: #f4f6f9;   /* light dashboard bg */
 }
@@ -112,16 +111,12 @@
   overflow-y: auto;
 }
 
+.balanceFee{
+  background-color: #f78242;
+}
 .students-scroll{
-  height: 70vh; 
   overflow-y: auto;
   overflow-x: hidden;
-}
-
-.last-Pay{
-  background: #f3e8ff;
-  color: #6f42c1;
-  
 }
 
 .feeCard:hover {
