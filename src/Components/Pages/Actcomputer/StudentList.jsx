@@ -1,14 +1,9 @@
 import React, { useState } from "react";
 import StudentPayFee from "./StudentPayFee";
 import { useEffect } from "react";
-import {
-  getAllPaymentsbyId,
-  getAllStdAndPay,
-} from "../../../Services/InstitudeServices";
-
+import { getAllStdAndPay } from "../../../Services/InstitudeServices";
 import StdsListsSkeleton from "../Skeleton/StdsListsSkeleton";
 import { Link } from "react-router-dom";
-import FailedFetch from "../Error/FailedFetch";
 
 const StudentList = () => {
   const [student, setStudent] = useState([]);
@@ -164,6 +159,71 @@ const StudentList = () => {
               </div>
             </div>
             {/* below Md screen */}
+            <div
+              className="card-body pt-0 d-block d-md-none p-0"
+              style={{ height: "70vh" }}
+            >
+              <div className="students-scroll h-100 card-body">
+                {filtered.map((s) => {
+                  const status = getStatus(s);
+                  return (
+                    <div key={s._id}>
+                      <div className="card mb-3">
+                        <div className="card-header pe-1">
+                          <div className="d-flex justify-content-between align-items-center">
+                            <strong>{s.stdName}</strong>
+                            <span className="col-6 col-sm-3 badge d-flex rounded small">
+                              <span
+                                className="flex-grow-1 rounded-start px-2 py-1 text-dark "
+                                style={{ background: "#b9d4fa" }}
+                              >
+                                <strong>{s.courseId.courseName}</strong>
+                              </span>
+                              <span
+                                className={`rounded-end px-2 py-1 ${getStatusClass(status)} `}
+                              >
+                                {status}
+                              </span>
+                            </span>
+                          </div>
+                        </div>
+                        <div className="card-body py-2 pe-1">
+                          <div>
+                            <strong>F/H: </strong>
+                            {s.stdFathOrHus}
+                          </div>
+                          <div className="d-flex justify-content-between align-items-center">
+                            <div>
+                              <strong>Ph.: </strong>
+                              {s.stdPhone}
+                            </div>
+                            <div>
+                              <div className="badge rounded d-flex justify-content-center py-0 ">
+                                <Link
+                                  to={`/students/${s._id}`}
+                                  className="border border-warning text-dark rounded-start-1 py-1 px-2 text-decoration-none"
+                                >
+                                  View
+                                </Link>
+                                <div className="vr bg-danger"></div>
+                                <div
+                                  className="bg-warning text-dark rounded-end-1 py-1 px-2"
+                                  onClick={() => {
+                                    handlePayBtn(s);
+                                  }}
+                                >
+                                  Pay Fee
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
           </div>
         </>
       )}
