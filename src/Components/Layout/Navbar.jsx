@@ -24,9 +24,9 @@ const Navbar = ({ toggleSidebar }) => {
       <div className="d-none d-md-block">
         <div className="d-flex gap-3 justify-content-e">
           <div className="d-flex flex-column small ">
-            <span className="badge text-bg-info ms-auto ">
-              {user.firstName.toUpperCase()}
-            </span>
+            <strong className="rounded px-2 text-bg-info ms-auto ">
+              {user.firstName}
+            </strong>
             <span className="text-dark">
               {new Date().toLocaleDateString("en-GB", {
                 weekday: "short",
@@ -38,7 +38,7 @@ const Navbar = ({ toggleSidebar }) => {
           </div>
 
           <button
-            className="btn btn-sm btn-outline-danger"
+            className="btn btn-sm btn-outline-danger "
             onClick={() => {
               localStorage.removeItem("token");
               navigate("/auth/login");
