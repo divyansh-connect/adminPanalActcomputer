@@ -16,11 +16,19 @@ const Navbar = ({ toggleSidebar }) => {
       >
         ☰
       </button>
-
-      <NavLink to="/" className="navbar-brand mb-0 h5">
-        <h4 className="fw-semibold m-0">Dashboard</h4>
-      </NavLink>
-
+      <div className="py-0">
+        <NavLink to="/" className="navbar-brand mb-0 h5 text-end">
+          <h4 className="fw-semibold m-0">Dashboard</h4>
+        </NavLink>
+        <strong className="text-danger small  d-md-none">
+          {new Date().toLocaleDateString("en-GB", {
+            weekday: "short",
+            day: "2-digit",
+            month: "short",
+            year: "numeric",
+          })}
+        </strong>
+      </div>
       <div className="d-none d-md-block">
         <div className="d-flex gap-3 justify-content-e">
           <div className="d-flex flex-column small ">
