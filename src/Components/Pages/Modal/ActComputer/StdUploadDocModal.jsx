@@ -26,7 +26,7 @@ const StdUploadDocModal = ({ setUpload, student, setStdDoc }) => {
       "application/pdf",
     ];
     if (!allowedTypes.includes(file.type)) {
-      return "Only JPG & PNG images allowed";
+      return "Only JPG,JPEG,PNG & PDF images allowed";
     }
     const maxSize = 5 * 1024 * 1024;
     if (file.size > maxSize) {

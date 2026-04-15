@@ -37,36 +37,38 @@ const Dashboard = () => {
 
   return (
     <>
-      <div className="row">
-        <div className="col-12">
-          <DashboardHead fetchData={fetchData} thisMonth={thisMonth} />
-        </div>
-        <div className="col-12 col-md-4">
-          <DashboardLibrary />
-        </div>
-        <div className="d-none d-md-block col-12 col-md-8">
-          <DashboardFee fetchData={fetchData} loading={loading} />
-        </div>
-        <div className="col-12 col-md-5 dashboardRightSection rounded-3 mb-4 shadow py-3">
-          <DashboardLeftUp setThisMonth={setThisMonth} />
-          <DashboardLeftDown fetchData={fetchData} />
-        </div>
-        <div className="col-12 col-md-7">
-          <DashboardRightCourse fetchData={fetchData} loading={loading} />
-        </div>
-        <div className="col-12 col-md-4 mb-3" style={{ height: "55vh" }}>
-          <DashboardData />
-        </div>
-        <div className="col-12 col-md-8 mb-3 " style={{ height: "55vh" }}>
-          <DashboardStaff />
-        </div>
-        <div className="col-12">
-          <hr />
-          <DashboardFooter />
+      <div className="p-1">
+        <div className="row">
+          <div className="col-12">
+            <DashboardHead fetchData={fetchData} thisMonth={thisMonth} />
+          </div>
+          <div className="col-12 col-md-4">
+            <DashboardLibrary />
+          </div>
+          <div className="d-none d-md-block col-12 col-md-8">
+            <DashboardFee fetchData={fetchData} loading={loading} />
+          </div>
+          <div className="col-12 col-md-5 dashboardRightSection rounded-3 mb-4 shadow py-3">
+            <DashboardLeftUp setThisMonth={setThisMonth} />
+            <DashboardLeftDown fetchData={fetchData} />
+          </div>
+          <div className="col-12 col-md-7">
+            <DashboardRightCourse fetchData={fetchData} loading={loading} />
+          </div>
+          <div className="col-12 col-md-4 mb-3" style={{ height: "55vh" }}>
+            <DashboardData />
+          </div>
+          <div className="col-12 col-md-8 mb-3 " style={{ height: "55vh" }}>
+            <DashboardStaff />
+          </div>
+          <div className="col-12">
+            <hr />
+            <DashboardFooter />
+          </div>
         </div>
       </div>
     </>
   );
 };
-// 0b1c3d
+
 export default Dashboard;

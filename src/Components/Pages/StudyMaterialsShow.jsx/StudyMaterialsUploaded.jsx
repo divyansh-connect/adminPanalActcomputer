@@ -4,6 +4,7 @@ import { deleteStdyMaterialFile } from "../../../Services/uploadServices";
 const StudyMaterialsUploaded = ({ uploadMaterials, setUploadMaterials }) => {
   const [isDelete, setIsDelete] = useState(null);
   const [errMsg, setErrMsg] = useState("");
+
   const formatDate = (decodeDate) => {
     const date = new Date(decodeDate);
     return date.toLocaleDateString("en-IN", {

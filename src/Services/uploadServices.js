@@ -119,3 +119,62 @@ export const deleteStdyMaterialFile = async (payload) => {
     };
   }
 };
+
+export const uploadGallery = async (file) => {
+  try {
+    const formData = new FormData();
+    formData.append("galleryPhoto", file);
+    const response = await apiFetch(`${API_URL}/api/upload/gallery`, {
+      method: "POST",
+      body: formData,
+    });
+    const data = await response.json();
+    if (!response.ok) {
+      return {
+        success: false,
+        message: data.message || "Gallery photo upload failed",
+      };
+    }
+    return {
+      success: true,
+      message: data.message || "Gallery photo uploaded successfully",
+      data: data.data,
+    };
+  } catch (error) {
+    if (error.message === "Unauthorized") throw error;
+    return {
+      success: false,
+      message: error.message || "Server failed",
+    };
+  }
+};
+
+export const deleteGalleryPhoto = async (payload) => {
+  try {
+    const response = await apiFetch(
+      `${API_URL}/api/upload/deleteGalleryPhoto`,
+      {
+        method: "POST",
+        body: JSON.stringify(payload),
+      },
+    );
+    const data = await response.json();
+    if (!response.ok) {
+      return {
+        success: false,
+        message: data.message || "Gallery photo delete failed",
+      };
+    }
+    return {
+      success: true,
+      message: data.message || "Gallery Photo deleted successfully",
+      data: data.data,
+    };
+  } catch (error) {
+    if (error.message === "Unauthorized") throw error;
+    return {
+      success: false,
+      message: error.message || "Server failed",
+    };
+  }
+};

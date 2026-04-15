@@ -31,21 +31,23 @@ const Announcements = () => {
 
   return (
     <>
-      <div className="row ">
-        <div className="col-12">
-          <AddAnnouncement setAnnouncementList={setAnnouncementList} />
-        </div>
-        <div className="col-12 ">
-          {loading ? (
-            <AnnouncementsSkeleton />
-          ) : (
-            <ShowAnnouncement
-              announcementList={announcementList}
-              setAnnouncementList={setAnnouncementList}
-              fetch={fetch}
-              setFetch={setFetch}
-            />
-          )}
+      <div className="p-2">
+        <div className="row ">
+          <div className="col-12">
+            <AddAnnouncement setAnnouncementList={setAnnouncementList} />
+          </div>
+          <div className="col-12 ">
+            {loading ? (
+              <AnnouncementsSkeleton />
+            ) : (
+              <ShowAnnouncement
+                announcementList={announcementList}
+                setAnnouncementList={setAnnouncementList}
+                fetch={fetch}
+                setFetch={setFetch}
+              />
+            )}
+          </div>
         </div>
       </div>
     </>

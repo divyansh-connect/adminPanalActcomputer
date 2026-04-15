@@ -312,3 +312,27 @@ export const getStudyMaterial = async () => {
     };
   }
 };
+
+export const getGallery = async () => {
+  try {
+    const response = await apiFetch(`${API_URL}/api/gallery`);
+    const data = await response.json();
+    if (!response.ok) {
+      return {
+        success: false,
+        message: data.message || "Gallery fetch failed ",
+      };
+    }
+    return {
+      success: true,
+      message: data.message || "Gallery fetch successfully",
+      data: data.data,
+    };
+  } catch (error) {
+    if (error.message === "Unauthorized") throw error;
+    return {
+      success: false,
+      message: error.message || "Network error",
+    };
+  }
+};
